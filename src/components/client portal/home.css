@@ -1,0 +1,2843 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --umc-bg: #eef7ff;
+  --umc-bg-soft: #f7fbff;
+  --umc-surface: #ffffff;
+  --umc-white: #ffffff;
+  --umc-ink: #0f2547;
+  --umc-text: #2c4268;
+  --umc-muted: #6b809f;
+  --umc-line: #d7e4f6;
+  --umc-blue: #0e5ad1;
+  --umc-blue-deep: #093f98;
+  --umc-cyan: #15b7c8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.umc-page {
+  color: var(--umc-text);
+  background:
+    radial-gradient(circle at 14% 10%, #d6ecff 0, transparent 35%),
+    radial-gradient(circle at 89% 18%, #d9f8ff 0, transparent 30%),
+    linear-gradient(180deg, #edf6ff 0%, #f8fbff 55%, #eef7ff 100%);
+  min-height: 100vh;
+  font-family: 'Public Sans', 'Segoe UI', sans-serif;
+}
+
+.umc-page h1,
+.umc-page h2,
+.umc-page h3,
+.umc-page h4 {
+  margin: 0;
+  color: var(--umc-ink);
+  font-family: 'Sora', 'Segoe UI', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.umc-page p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.umc-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 10px clamp(10px, 1.8vw, 22px);
+  backdrop-filter: blur(8px);
+  background: rgba(239, 247, 255, 0.72);
+}
+
+.umc-nav {
+  max-width: min(1380px, 98vw);
+  margin: 0 auto;
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(137, 177, 236, 0.55);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 28px rgba(14, 90, 209, 0.12);
+}
+
+.umc-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--umc-ink);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.umc-brand strong {
+  display: block;
+  color: var(--umc-blue);
+}
+
+.umc-brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(145deg, var(--umc-cyan), var(--umc-blue));
+  box-shadow: 0 8px 18px rgba(14, 90, 209, 0.25);
+}
+
+.umc-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 4px;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid #d8e6fa;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f5f9ff, #edf4ff);
+  padding: 4px;
+  scrollbar-width: thin;
+}
+
+.umc-links::-webkit-scrollbar {
+  height: 6px;
+}
+
+.umc-links::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.umc-links::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(15, 82, 190, 0.28);
+}
+
+.umc-links a,
+.umc-links button,
+.umc-auth a,
+.umc-footer a {
+  text-decoration: none;
+  color: #17345e;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.umc-links a:hover,
+.umc-links button:hover,
+.umc-auth a:hover,
+.umc-footer a:hover {
+  color: var(--umc-blue);
+}
+
+.umc-links a,
+.umc-links button {
+  white-space: nowrap;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.umc-links a:hover,
+.umc-links button:hover {
+  background: #e6f0ff;
+  border-color: #c2d8f8;
+  transform: translateY(-1px);
+}
+
+.umc-links a:first-child,
+.umc-links button:first-child {
+  color: #ffffff;
+  border-color: transparent;
+  background: linear-gradient(140deg, var(--umc-blue), var(--umc-blue-deep));
+}
+
+.umc-links a:first-child:hover,
+.umc-links button:first-child:hover {
+  color: #ffffff;
+  border-color: transparent;
+  background: linear-gradient(140deg, #0b53bf, #083784);
+}
+
+.umc-auth {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: end;
+  margin-left: auto;
+}
+
+.umc-auth a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(14, 90, 209, 0.28);
+  background: #ffffff;
+  color: #17345e;
+  font-weight: 700;
+}
+
+.umc-auth a:hover {
+  background: #eef4ff;
+  border-color: rgba(14, 90, 209, 0.46);
+}
+
+.umc-auth .primary {
+  border: 0;
+  color: #ffffff;
+  background: linear-gradient(140deg, var(--umc-blue), var(--umc-blue-deep));
+}
+
+.umc-auth .primary:hover {
+  color: #ffffff;
+  background: linear-gradient(140deg, #0b53bf, #083784);
+}
+
+main {
+  max-width: min(1360px, 96vw);
+  margin: 0 auto;
+  padding: 20px 20px 84px;
+  display: grid;
+  gap: 44px;
+}
+
+.umc-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: clamp(20px, 2.5vw, 36px);
+  align-items: center;
+  min-height: clamp(540px, calc(100vh - 130px), 760px);
+  padding: clamp(18px, 2vw, 28px);
+  border: 1px solid #d8e7f9;
+  border-radius: 28px;
+  background: linear-gradient(145deg, #fafdff, #ecf4ff);
+  box-shadow: 0 20px 32px rgba(13, 80, 177, 0.11);
+  animation: reveal-up 0.8s ease;
+}
+
+.umc-hero > article {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(4px, 0.8vw, 14px);
+}
+
+.eyebrow {
+  margin-bottom: 10px;
+  color: var(--umc-blue);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.umc-hero h1 {
+  font-size: clamp(2.2rem, 4.4vw, 4.25rem);
+  line-height: 1.08;
+  max-width: 18ch;
+}
+
+.umc-hero-priority {
+  font-size: 0.72em;
+}
+
+.umc-hero p {
+  margin-top: 14px;
+  max-width: 54ch;
+  font-size: clamp(1rem, 1.18vw, 1.38rem);
+}
+
+.umc-hero img {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  max-height: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.umc-hero-actions {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cta-main,
+.cta-soft,
+.umc-appointment button,
+.doctor-card button,
+.appointment-highlight a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 0;
+  font-family: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.cta-main {
+  padding: 12px 16px;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--umc-blue), var(--umc-blue-deep));
+}
+
+.cta-soft {
+  padding: 12px 16px;
+  color: var(--umc-blue);
+  border: 1px solid rgba(14, 90, 209, 0.28);
+  background: #ffffff;
+}
+
+.umc-services header,
+.umc-doctors header,
+.umc-gallery header,
+.umc-testimonials header {
+  margin-bottom: 16px;
+}
+
+.umc-services h2,
+.umc-about h2,
+.umc-doctors h2,
+.umc-appointment h2,
+.umc-gallery h2,
+.umc-testimonials h2,
+.umc-health-tips h2,
+.umc-contact h2 {
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  margin-bottom: 8px;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.service-card {
+  border: 1px solid var(--umc-line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--umc-surface);
+  display: grid;
+  align-content: start;
+  grid-template-rows: auto auto 1fr;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 20px rgba(15, 69, 146, 0.14);
+}
+
+.service-media {
+  position: relative;
+  height: 170px;
+  overflow: hidden;
+}
+
+.service-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 0.35s ease;
+}
+
+.service-card:hover .service-media img {
+  transform: scale(1.08);
+}
+
+.service-icon {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.75rem;
+  color: #ffffff;
+  background: linear-gradient(150deg, var(--umc-cyan), var(--umc-blue));
+  box-shadow: 0 10px 18px rgba(7, 52, 118, 0.28);
+}
+
+.service-card h3 {
+  margin: 14px 16px 8px;
+  font-size: 1.05rem;
+}
+
+.service-card p {
+  margin: 0 16px 16px;
+}
+
+.umc-about {
+  display: grid;
+  gap: 13px;
+  scroll-margin-top: 100px;
+  padding-top: 5px;
+  padding-bottom: 44px;
+}
+
+.about-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.about-intro {
+  padding-right: 16px;
+  display: grid;
+  align-content: center;
+  gap: 10px;
+}
+
+.about-intro h2 {
+  font-size: clamp(2.2rem, 4.2vw, 4.8rem);
+  line-height: 0.98;
+  max-width: 11ch;
+}
+
+.about-intro em {
+  color: var(--umc-blue);
+  font-style: italic;
+  font-weight: 800;
+}
+
+.about-intro p {
+  max-width: 55ch;
+  color: #425d83;
+  font-size: clamp(1rem, 1.18vw, 1.36rem);
+}
+
+.about-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.about-btn-soft,
+.about-btn-link {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.about-btn-soft {
+  padding: 12px 18px;
+  border-radius: 14px;
+  color: #ffffff;
+  background: linear-gradient(145deg, #486da5, #7e9fd1);
+  box-shadow: 0 10px 18px rgba(67, 96, 144, 0.22);
+}
+
+.about-btn-link {
+  color: var(--umc-ink);
+  padding: 10px 14px;
+  background: linear-gradient(145deg, #2eb456, #7e9fd1);
+  box-shadow: 0 10px 18px rgba(67, 96, 144, 0.22);
+  border-radius: 14px;
+}
+
+.about-hero-image {
+  margin: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 320px;
+}
+
+.about-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-outcome-card {
+  position: absolute;
+  left: 50%;
+  bottom: -36px;
+  transform: translateX(-20%);
+  width: min(300px, 80%);
+  border-radius: 18px;
+  border: 1px solid #d8e7f9;
+  background: #ffffff;
+  box-shadow: 0 16px 28px rgba(3, 51, 134, 0.16);
+  padding: 16px 18px;
+}
+
+.about-outcome-card strong {
+  display: block;
+  color: var(--umc-blue);
+  font-family: 'Sora', 'Segoe UI', sans-serif;
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.about-outcome-card h3 {
+  margin-top: 4px;
+}
+
+.about-outcome-card p {
+  margin-top: 4px;
+  color: #5a7397;
+  font-size: 0.96rem;
+}
+
+.about-values {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.about-value-card {
+  border: 1px solid #c9def7;
+  border-radius: 20px;
+  background: linear-gradient(160deg, #ffffff, #f4f9ff);
+  padding: 24px;
+}
+
+.about-value-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: #04565ee6;
+  background: #dff4f1;
+}
+
+.about-value-card h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: clamp(2rem, 3.2vw, 3.2rem);
+  line-height: 1.05;
+}
+
+.about-value-card p {
+  color: #425d83;
+  font-size: clamp(1.02rem, 1.18vw, 1.35rem);
+  line-height: 1.55;
+}
+
+.umc-history-details,
+.umc-facilities {
+  scroll-margin-top: 96px;
+}
+
+.umc-history-details > header,
+.umc-facilities > header {
+  margin-bottom: 16px;
+}
+
+.history-kicker,
+.facilities-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0f5dbf;
+  font-weight: 800;
+  background: #deecff;
+}
+
+.umc-history-details > header p,
+.umc-facilities > header p {
+  color: #476187;
+  max-width: 70ch;
+}
+
+.history-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  gap: 14px;
+}
+
+.history-timeline-card,
+.history-growth-card,
+.history-milestones article,
+.facility-card,
+.facility-hours,
+.facility-features,
+.facility-gallery figure {
+  border: 1px solid #cfe2f8;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 20px rgba(9, 68, 150, 0.08);
+}
+
+.history-timeline-card,
+.history-growth-card,
+.facility-hours,
+.facility-features {
+  padding: 18px;
+}
+
+.history-timeline-card h3,
+.history-growth-card h3,
+.facility-hours h3,
+.facility-features h3 {
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+}
+
+.history-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.history-timeline li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  padding-left: 8px;
+  border-left: 2px solid #d8e8fb;
+}
+
+.timeline-year {
+  min-width: 60px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1157b8;
+  background: #e6f1ff;
+  text-align: center;
+}
+
+.timeline-title {
+  margin-bottom: 4px;
+  font-weight: 700;
+  color: #153866;
+}
+
+.history-growth-card p {
+  color: #4c678d;
+}
+
+.history-growth-tags {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.history-growth-tags span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #c5dcf8;
+  color: #185db8;
+  background: #eff5ff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.history-milestones {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.history-milestones article {
+  padding: 18px;
+  display: grid;
+  gap: 6px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.history-milestones p {
+  color: #4d668a;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+.history-milestones strong {
+  font-size: 1.8rem;
+  color: #0f59bc;
+  line-height: 1.1;
+}
+
+.history-milestones span {
+  color: #4f678c;
+  font-size: 0.95rem;
+}
+
+.history-gallery,
+.facility-gallery {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.history-gallery figure,
+.facility-gallery figure {
+  margin: 0;
+  overflow: hidden;
+}
+
+.history-gallery img,
+.facility-gallery img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+}
+
+.history-gallery figcaption,
+.facility-gallery figcaption {
+  padding: 12px 14px;
+  border-top: 1px solid #d2e4f8;
+  background: linear-gradient(180deg, #ffffff 0%, #f5faff 100%);
+}
+
+.history-gallery span {
+  display: inline-block;
+  margin-bottom: 4px;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #1459b5;
+}
+
+.history-gallery h3 {
+  font-size: 1.1rem;
+}
+
+.facilities-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.facility-card {
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.facility-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 26px rgba(9, 68, 150, 0.16);
+}
+
+.facility-image-wrap {
+  position: relative;
+  height: 158px;
+  overflow: hidden;
+}
+
+.facility-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.03);
+  transition: transform 0.35s ease;
+}
+
+.facility-card:hover .facility-image-wrap img {
+  transform: scale(1.08);
+}
+
+.facility-icon {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 4px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(15, 37, 71, 0.76);
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.facility-card h3 {
+  margin: 14px 14px 8px;
+  font-size: 1.05rem;
+}
+
+.facility-card p {
+  margin: 0 14px 14px;
+  color: #4f678c;
+}
+
+.facilities-support-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.facility-hours ul,
+.facility-features ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.facility-hours li,
+.facility-features li {
+  padding: 10px 0;
+  border-bottom: 1px solid #e0ecfb;
+}
+
+.facility-hours li:last-child,
+.facility-features li:last-child {
+  border-bottom: 0;
+}
+
+.facility-hours li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.facility-hours li span {
+  color: #4e678d;
+}
+
+.facility-hours li strong {
+  color: #1357b2;
+  font-size: 0.95rem;
+}
+
+.facility-features li {
+  color: #305b8e;
+  font-weight: 600;
+}
+
+.facility-features li::before {
+  content: '✓';
+  margin-right: 8px;
+  color: #1ba257;
+  font-weight: 800;
+}
+
+.doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.doctor-card {
+  border: 1px solid var(--umc-line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.doctor-media {
+  position: relative;
+  overflow: hidden;
+}
+
+.doctor-main-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 0.35s ease;
+}
+
+.doctor-card:hover .doctor-main-image {
+  transform: scale(1.08);
+}
+
+.doctor-availability {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: rgba(15, 37, 71, 0.78);
+  backdrop-filter: blur(4px);
+}
+
+.doctor-focus-image {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  width: 74px;
+  height: 74px;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  object-fit: cover;
+  box-shadow: 0 8px 16px rgba(6, 43, 101, 0.3);
+}
+
+.doctor-card h3,
+.doctor-card p,
+.doctor-card button {
+  margin-left: 16px;
+}
+
+.doctor-card h3 {
+  margin-top: 14px;
+}
+
+.doctor-card p {
+  margin-top: 4px;
+  color: var(--umc-muted);
+}
+
+.doctor-card button {
+  margin-top: 12px;
+  margin-bottom: 16px;
+  min-height: 42px;
+  padding: 10px 14px;
+  color: #ffffff;
+  border: 1px solid rgba(7, 64, 154, 0.2);
+  background: linear-gradient(140deg, #2f8bdc, #1f66c9);
+  box-shadow: 0 10px 18px rgba(19, 86, 170, 0.2);
+}
+
+.umc-appointment {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.9fr);
+  gap: 20px;
+}
+
+.umc-appointment article,
+.appointment-highlight,
+.umc-health-tips,
+.umc-contact article,
+.umc-gallery figure,
+.umc-testimonials blockquote {
+  border: 1px solid var(--umc-line);
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.umc-appointment article {
+  padding: 20px;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(109, 189, 236, 0.15) 0, transparent 45%),
+    radial-gradient(circle at 90% 88%, rgba(79, 117, 197, 0.09) 0, transparent 42%),
+    #ffffff;
+  box-shadow: 0 16px 30px rgba(9, 63, 152, 0.08);
+}
+
+.umc-appointment form {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.umc-appointment input,
+.umc-appointment select {
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid #ccdcf2;
+  background: #f9fbff;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.umc-appointment input:focus,
+.umc-appointment select:focus {
+  outline: 0;
+  border-color: #6ba3ea;
+  box-shadow: 0 0 0 4px rgba(27, 102, 203, 0.14);
+  transform: translateY(-1px);
+}
+
+.umc-appointment button {
+  margin-top: 10px;
+  height: 46px;
+  border-radius: 12px;
+  font-size: 0.94rem;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1e5fcf, #1247b2);
+  box-shadow: 0 14px 24px rgba(15, 73, 174, 0.24);
+}
+
+.appointment-highlight {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  background:
+    radial-gradient(circle at 84% 8%, rgba(255, 255, 255, 0.3) 0, transparent 34%),
+    linear-gradient(165deg, #67c5ca, #3f6da9);
+  color: #ffffff;
+  box-shadow: 0 18px 32px rgba(16, 74, 154, 0.25);
+}
+
+.appointment-highlight::after {
+  content: '';
+  position: absolute;
+  right: -36px;
+  bottom: -44px;
+  width: 150px;
+  height: 150px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.appointment-highlight h3,
+.appointment-highlight p {
+  color: #ffffff;
+}
+
+.appointment-highlight h3 {
+  font-size: clamp(1.45rem, 2.2vw, 2rem);
+  line-height: 1.04;
+}
+
+.appointment-highlight p {
+  max-width: 28ch;
+  font-size: clamp(0.9rem, 1.05vw, 1.05rem);
+  line-height: 1.4;
+}
+
+.appointment-highlight a {
+  margin-top: auto;
+  width: fit-content;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  font-weight: 700;
+  color: var(--umc-blue-deep);
+  background: #ffffff;
+  box-shadow: 0 12px 22px rgba(12, 47, 112, 0.22);
+}
+
+.umc-stats {
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 10% 14%, rgba(255, 255, 255, 0.2) 0, transparent 32%),
+    linear-gradient(105deg, #49b1ae, #1f6fb3 48%, #1454b0);
+  color: #ffffff;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: min(86%, 980px);
+  margin: 0 auto;
+  padding: 12px;
+  gap: 8px;
+  box-shadow: 0 18px 28px rgba(14, 72, 156, 0.2);
+}
+
+.umc-stats article {
+  min-height: 110px;
+  padding: 8px 6px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.11);
+  backdrop-filter: blur(4px);
+  text-align: center;
+}
+
+.umc-stats strong {
+  display: block;
+  font-family: 'Sora', 'Segoe UI', sans-serif;
+  font-size: clamp(1.35rem, 1.7vw, 1.8rem);
+  line-height: 1;
+}
+
+.umc-stats span {
+  margin-top: 4px;
+  display: inline-block;
+  font-size: clamp(0.78rem, 0.8vw, 0.86rem);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.gallery-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0f5dbf;
+  font-weight: 800;
+  background: #deecff;
+}
+
+.gallery-card {
+  margin: 0;
+  border: 1px solid #d3e4f8;
+  border-radius: 20px;
+  background: #ffffff;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 230px auto;
+  box-shadow: 0 10px 22px rgba(10, 70, 151, 0.1);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 30px rgba(10, 72, 156, 0.18);
+}
+
+.gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 0.4s ease;
+}
+
+.gallery-card:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-card figcaption {
+  position: relative;
+  padding: 14px 14px 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.gallery-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #0d6074;
+  background: #dff3f6;
+}
+
+.gallery-card h3 {
+  margin-top: 10px;
+  font-size: 1.35rem;
+  color: #14325d;
+}
+
+.gallery-card p {
+  margin-top: 8px;
+  color: #4f678c;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.umc-gallery + .umc-testimonials {
+  margin-top: -44px;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.umc-testimonials header p {
+  color: #476187;
+  max-width: 62ch;
+}
+
+.testimonial-note {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #5b7395;
+}
+
+.testimonial-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0f5dbf;
+  font-weight: 800;
+  background: #deecff;
+}
+
+.testimonial-card {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  border-radius: 22px;
+  border: 1px solid #c9ddf7;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(141, 196, 235, 0.2) 0, transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  padding: 18px;
+  box-shadow: 0 12px 26px rgba(10, 65, 146, 0.1);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 30px rgba(12, 74, 159, 0.18);
+}
+
+.testimonial-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--umc-blue), var(--umc-cyan));
+}
+
+.testimonial-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.testimonial-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonial-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(14, 90, 209, 0.3);
+  box-shadow: 0 8px 16px rgba(9, 66, 149, 0.14);
+}
+
+.testimonial-score {
+  font-size: 1rem;
+  letter-spacing: 0.09em;
+  color: #f59e0b;
+  font-weight: 800;
+}
+
+.umc-testimonials cite {
+  display: block;
+  margin-top: 0;
+  color: var(--umc-blue);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.testimonial-role {
+  display: block;
+  margin-top: 2px;
+  color: var(--umc-muted);
+  font-size: 0.95rem;
+}
+
+.testimonial-quote {
+  font-size: 1.03rem;
+  line-height: 1.6;
+  color: #213f69;
+}
+
+.testimonial-footer {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.testimonial-tag {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #0d6074;
+  background: #dff3f6;
+}
+
+.testimonial-support-image {
+  width: 120px;
+  height: 72px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 1px solid rgba(14, 90, 209, 0.16);
+}
+
+.umc-health-tips {
+  border: 1px solid #d2e4f9;
+  border-radius: 24px;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 10% 12%, rgba(160, 214, 248, 0.2) 0, transparent 38%),
+    radial-gradient(circle at 92% 88%, rgba(163, 232, 223, 0.16) 0, transparent 40%),
+    #ffffff;
+  box-shadow: 0 16px 30px rgba(12, 70, 152, 0.1);
+}
+
+.health-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0f5dbf;
+  font-weight: 800;
+  background: #deecff;
+}
+
+.umc-health-tips > header p {
+  color: #476187;
+  max-width: 62ch;
+}
+
+.health-tips-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.health-tip-card {
+  overflow: hidden;
+  border: 1px solid #cddff6;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  display: grid;
+  grid-template-rows: 180px 1fr;
+  box-shadow: 0 10px 22px rgba(10, 70, 151, 0.08);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.health-tip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 30px rgba(10, 72, 156, 0.16);
+}
+
+.health-tip-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 0.35s ease;
+}
+
+.health-tip-card:hover img {
+  transform: scale(1.07);
+}
+
+.health-tip-content {
+  padding: 14px 14px 16px;
+}
+
+.health-tip-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.health-tip-chip {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #0d6074;
+  background: #dff3f6;
+}
+
+.health-tip-frequency {
+  font-size: 0.78rem;
+  color: #1a66b7;
+  font-weight: 700;
+}
+
+.health-tip-content h3 {
+  margin-bottom: 8px;
+  font-size: 1.62rem;
+  color: #14325d;
+}
+
+.health-tip-content p {
+  color: #4f678c;
+  font-size: 1.03rem;
+  line-height: 1.55;
+}
+
+.umc-contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.contact-panel {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #d3e4f9;
+  background:
+    radial-gradient(circle at 8% 10%, rgba(170, 217, 245, 0.2) 0, transparent 38%),
+    radial-gradient(circle at 92% 90%, rgba(174, 233, 224, 0.16) 0, transparent 42%),
+    #f8fbff;
+  box-shadow: 0 12px 22px rgba(12, 70, 152, 0.1);
+}
+
+.contact-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0f5dbf;
+  font-weight: 800;
+  background: #deecff;
+}
+
+.contact-kicker-form {
+  color: #0d6074;
+  background: #dff3f6;
+}
+
+.contact-info-panel h2 {
+  font-size: clamp(1.28rem, 1.7vw, 1.7rem);
+  margin-bottom: 4px;
+}
+
+.contact-intro {
+  color: #476187;
+  font-size: 0.82rem;
+  margin-bottom: 8px;
+  max-width: 54ch;
+}
+
+.contact-info-list {
+  display: grid;
+  gap: 6px;
+}
+
+.contact-info-item {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #d4e4f8;
+  background: #f2f7ff;
+}
+
+.contact-info-item h3 {
+  margin-bottom: 2px;
+  font-size: 0.9rem;
+}
+
+.contact-info-item p {
+  font-size: 0.8rem;
+}
+
+.contact-info-item p {
+  color: #516d93;
+}
+
+.contact-quick-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.contact-quick-link {
+  text-decoration: none;
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1d60cf, #154cad);
+  box-shadow: 0 10px 18px rgba(15, 73, 174, 0.22);
+}
+
+.contact-quick-link.secondary {
+  color: #185db8;
+  background: #edf4ff;
+  border: 1px solid #b8cff1;
+  box-shadow: none;
+}
+
+.contact-map-head {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #48698f;
+  font-weight: 700;
+}
+
+.contact-map-grid {
+  margin-top: 8px;
+  min-height: 96px;
+  border-radius: 10px;
+  border: 1px solid #d6e4f5;
+  overflow: hidden;
+  background: #dce7f5;
+}
+
+.contact-map-grid img {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  display: block;
+}
+
+.contact-form-panel h3 {
+  font-size: clamp(1.2rem, 1.7vw, 1.6rem);
+  margin-bottom: 4px;
+}
+
+.contact-form {
+  display: grid;
+  gap: 6px;
+}
+
+.contact-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 4px;
+  font-weight: 600;
+  color: #1d3e6c;
+  font-size: 0.8rem;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  border-radius: 10px;
+  border: 1px solid #b8cfe9;
+  background: #f4f8ff;
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: var(--umc-ink);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  outline: 0;
+  border-color: #6ba3ea;
+  box-shadow: 0 0 0 4px rgba(27, 102, 203, 0.14);
+  transform: translateY(-1px);
+}
+
+.contact-form input,
+.contact-form select {
+  height: 38px;
+  padding: 0 10px;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 82px;
+  padding: 8px 10px;
+}
+
+.contact-form-note {
+  margin: -2px 0 2px;
+  color: #5d7598;
+  font-size: 0.74rem;
+}
+
+.contact-form button {
+  margin-top: 4px;
+  height: 38px;
+  border: 0;
+  border-radius: 10px;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.84rem;
+  background: linear-gradient(180deg, #1b62b8, #0f4f95);
+  box-shadow: 0 14px 24px rgba(15, 73, 174, 0.24);
+}
+
+.umc-footer {
+  margin: 0 auto;
+  width: calc(100% - 8px);
+  max-width: 100%;
+  padding: 14px 14px 12px;
+  border-radius: 20px;
+  border: 1px solid #c8dcf5;
+  background:
+    radial-gradient(circle at 4% 7%, rgba(146, 209, 255, 0.26) 0, transparent 34%),
+    radial-gradient(circle at 97% 87%, rgba(112, 211, 207, 0.24) 0, transparent 38%),
+    linear-gradient(180deg, #ffffff 0%, #f3f9ff 100%);
+  box-shadow: 0 18px 38px rgba(10, 65, 146, 0.13);
+  position: relative;
+  overflow: hidden;
+}
+
+.umc-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.28fr) repeat(3, minmax(0, 0.78fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.umc-footer h4 {
+  margin-bottom: 8px;
+  font-size: 1.02rem;
+  color: #17345e;
+}
+
+.umc-footer-column {
+  display: grid;
+  gap: 7px;
+  align-content: start;
+  padding: 11px;
+  border-radius: 14px;
+  border: 1px solid rgba(161, 197, 238, 0.55);
+  background: linear-gradient(170deg, #fbfdff, #eef5ff);
+}
+
+.umc-footer-brand-block {
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(159, 203, 245, 0.58);
+  background: linear-gradient(160deg, #ffffff, #edf5ff);
+}
+
+.umc-footer-kicker {
+  width: fit-content;
+  margin: 0;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(32, 99, 192, 0.28);
+  background: #e8f1ff;
+  color: #1a57ae;
+  font-size: 0.69rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.umc-footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #0f2547;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.15;
+}
+
+.umc-footer-brand strong {
+  display: block;
+  color: var(--umc-blue);
+}
+
+.umc-footer-brand-block p {
+  margin: 0;
+  color: #466183;
+  line-height: 1.5;
+  font-size: 0.84rem;
+  max-width: 40ch;
+}
+
+.umc-footer-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.umc-footer-meta-item {
+  display: grid;
+  gap: 2px;
+  padding: 8px 9px;
+  border-radius: 10px;
+  border: 1px solid rgba(170, 205, 243, 0.62);
+  background: #f5f9ff;
+}
+
+.umc-footer-meta-item span {
+  color: #4f6c93;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.umc-footer-meta-item strong {
+  color: #173b73;
+  font-size: 0.76rem;
+  line-height: 1.35;
+}
+
+.umc-footer-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.umc-footer-badges span {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #e4efff;
+  border: 1px solid #bfd8fb;
+  color: #144fa4;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.umc-footer-column a {
+  width: fit-content;
+  font-size: 0.82rem;
+  line-height: 1.3;
+  padding: 3px 0;
+  position: relative;
+}
+
+.umc-footer-column a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, #1a66cb, #22a6b4);
+  transition: transform 0.2s ease;
+}
+
+.umc-footer-column a:hover::after {
+  transform: scaleX(1);
+}
+
+.umc-footer-contact {
+  margin: 0;
+  color: #2e5585;
+  font-weight: 600;
+  font-size: 0.83rem;
+}
+
+.umc-footer-socials {
+  margin-top: 2px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.umc-footer-socials a {
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid #bfd5f4;
+  color: #1a58ac;
+  background: #eff5ff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.umc-footer-socials a:hover {
+  background: #deedff;
+  transform: translateY(-1px);
+}
+
+.umc-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: min(270px, 34%);
+  height: 4px;
+  border-radius: 0 0 999px 999px;
+  background: linear-gradient(90deg, var(--umc-blue), var(--umc-cyan) 74%);
+}
+
+.umc-footer-note {
+  margin: 0;
+  color: #4f678c;
+  line-height: 1.35;
+  font-size: 0.8rem;
+}
+
+.umc-footer-action {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 192, 240, 0.55);
+  background: linear-gradient(96deg, #eaf4ff 0%, #f7fbff 55%, #e8fbfb 100%);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.umc-footer-action p {
+  margin: 0;
+  color: #2f527f;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.umc-footer-action > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.umc-footer-action a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, #1b67cb, #0f4f95);
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.umc-footer-action a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px rgba(18, 76, 158, 0.2);
+}
+
+.umc-footer-action a.secondary {
+  border-color: #a8c9ef;
+  background: #f5f9ff;
+  color: #1b5aae;
+}
+
+.umc-footer-bottom {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(14, 90, 209, 0.18);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.umc-footer-copy {
+  margin: 0;
+  color: #5d7598;
+  font-size: 0.76rem;
+}
+
+.umc-footer-legal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.umc-footer-legal a {
+  text-decoration: none;
+  color: #305d99;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.umc-emergency,
+.umc-chat {
+  position: fixed;
+  right: 18px;
+  border: 0;
+  color: #ffffff;
+  background: linear-gradient(145deg, #ef4444, #b91c1c);
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 700;
+  box-shadow: 0 12px 24px rgba(158, 20, 20, 0.28);
+  z-index: 12;
+}
+
+.umc-emergency {
+  top: 85px;
+  padding: 11px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.umc-emergency-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(7, 24, 56, 0.42);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.umc-emergency-panel {
+  width: min(560px, 94vw);
+  background: linear-gradient(180deg, #ffffff 0%, #f4f9ff 100%);
+  border: 1px solid rgba(14, 90, 209, 0.22);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 20px 34px rgba(11, 54, 121, 0.2);
+  display: grid;
+  gap: 10px;
+}
+
+.umc-emergency-panel h3 {
+  font-size: 1.2rem;
+  color: #0e2f64;
+}
+
+.umc-emergency-panel p {
+  color: #325078;
+}
+
+.umc-emergency-panel ul {
+  margin: 0;
+  padding-left: 18px;
+  color: #27486f;
+  display: grid;
+  gap: 6px;
+}
+
+.umc-emergency-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.umc-emergency-actions a,
+.umc-emergency-actions button {
+  border: 0;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.umc-emergency-actions a:first-child {
+  color: #ffffff;
+  background: linear-gradient(145deg, #ef4444, #b91c1c);
+}
+
+.umc-emergency-actions a:nth-child(2) {
+  color: var(--umc-blue);
+  background: #e8f1ff;
+}
+
+.umc-emergency-actions button {
+  color: #324f74;
+  background: #eef4fc;
+}
+
+.umc-chat {
+  bottom: 16px;
+  padding: 12px 16px;
+  border-radius: 11px;
+  cursor: pointer;
+  background: linear-gradient(145deg, #0ea5e9, #075985);
+  box-shadow: 0 12px 24px rgba(7, 89, 133, 0.28);
+}
+
+.umc-chat-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 21;
+  background: rgba(7, 24, 56, 0.42);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.umc-chat-panel {
+  width: min(580px, 94vw);
+  border-radius: 18px;
+  border: 1px solid rgba(14, 90, 209, 0.24);
+  background: linear-gradient(180deg, #ffffff 0%, #f3f9ff 100%);
+  padding: 16px;
+  box-shadow: 0 22px 36px rgba(10, 56, 124, 0.2);
+  display: grid;
+  gap: 10px;
+}
+
+.umc-chat-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.umc-chat-head h3 {
+  font-size: 1.2rem;
+  color: #0e2f64;
+}
+
+.umc-chat-head p {
+  color: #35567f;
+}
+
+.umc-chat-head button {
+  border: 0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-weight: 700;
+  color: #37577e;
+  background: #ebf3fe;
+  cursor: pointer;
+}
+
+.umc-chat-stream {
+  max-height: 220px;
+  overflow: auto;
+  border: 1px solid rgba(14, 90, 209, 0.2);
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.umc-chat-stream p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #284b74;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f1f7ff;
+}
+
+.umc-chat-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.umc-chat-quick-actions button {
+  border: 1px solid rgba(14, 90, 209, 0.24);
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #28558a;
+  font-family: inherit;
+  font-weight: 700;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.umc-chat-compose {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.umc-chat-compose input {
+  height: 40px;
+  border: 1px solid rgba(14, 90, 209, 0.22);
+  border-radius: 10px;
+  padding: 0 12px;
+  font-family: inherit;
+  color: #27486f;
+  background: #ffffff;
+}
+
+.umc-chat-compose button {
+  border: 0;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(145deg, #0ea5e9, #075985);
+  cursor: pointer;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 1180px) {
+  .umc-services {
+    min-height: calc(100vh - 120px);
+    display: grid;
+    align-content: center;
+    gap: 20px;
+  }
+
+  .umc-services header {
+    margin-bottom: 0;
+  }
+
+  .service-grid {
+    gap: 18px;
+  }
+
+  .service-card {
+    min-height: 248px;
+    min-height: 370px;
+  }
+
+  .service-media {
+    height: 190px;
+  }
+
+  .service-card h3 {
+    margin-top: 16px;
+    font-size: 1.15rem;
+  }
+
+  .service-card p {
+    font-size: 1.08rem;
+  }
+
+  .umc-about {
+    min-height: calc(100vh - 70px);
+    align-content: start;
+    padding-top: 10px;
+    padding-bottom: 56px;
+  }
+
+  .about-hero {
+    gap: 24px;
+    margin-bottom: 52px;
+  }
+
+  .about-hero-image {
+    min-height: 480px;
+  }
+
+  .about-values {
+    gap: 18px;
+  }
+
+  .about-value-card {
+    min-height: 260px;
+  }
+
+  .umc-doctors {
+    min-height: calc(100vh - 120px);
+    display: grid;
+    align-content: center;
+    gap: 20px;
+  }
+
+  .umc-doctors header {
+    margin-bottom: 0;
+  }
+
+  .umc-doctors h2 {
+    font-size: clamp(2.4rem, 3vw, 3rem);
+  }
+
+  .umc-doctors header p {
+    font-size: 1.15rem;
+  }
+
+  .doctor-grid {
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  .doctor-card {
+    min-height: 430px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .doctor-main-image {
+    height: clamp(200px, 24vh, 260px);
+  }
+
+  .doctor-availability {
+    top: 16px;
+    left: 16px;
+    font-size: 0.78rem;
+  }
+
+  .doctor-focus-image {
+    right: 16px;
+    bottom: 14px;
+    width: 92px;
+    height: 92px;
+    border-radius: 18px;
+  }
+
+  .doctor-card h3,
+  .doctor-card p,
+  .doctor-card button {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .doctor-card h3 {
+    margin-top: 18px;
+    font-size: 1.35rem;
+  }
+
+  .doctor-card p {
+    margin-top: 6px;
+    font-size: 0.94rem;
+  }
+
+  .doctor-card button {
+    margin-top: auto;
+    margin-bottom: 16px;
+    min-height: 40px;
+    font-size: 0.95rem;
+  }
+
+  .umc-appointment {
+    min-height: calc(100vh - 280px);
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.95fr);
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .umc-appointment h2 {
+    font-size: clamp(1.75rem, 2vw, 2.1rem);
+  }
+
+  .umc-appointment > article,
+  .appointment-highlight {
+    min-height: 390px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .umc-appointment > article p,
+  .appointment-highlight p {
+    font-size: 0.94rem;
+  }
+
+  .umc-appointment form {
+    margin-top: 12px;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .umc-appointment input,
+  .umc-appointment select,
+  .umc-appointment button {
+    height: 44px;
+    font-size: 0.92rem;
+  }
+
+  .appointment-highlight {
+    justify-content: space-between;
+  }
+
+  .appointment-highlight h3 {
+    font-size: clamp(1.35rem, 1.5vw, 1.65rem);
+    line-height: 1.12;
+  }
+
+  .appointment-highlight a {
+    margin-top: 12px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  .umc-stats {
+    min-height: 126px;
+    gap: 8px;
+    padding: 10px;
+    width: min(80%, 900px);
+    align-items: center;
+  }
+
+  .umc-stats article {
+    height: 100%;
+    display: grid;
+    place-content: center;
+  }
+
+  .umc-stats strong {
+    font-size: clamp(1.3rem, 1.65vw, 1.75rem);
+    line-height: 1;
+  }
+
+  .umc-stats span {
+    margin-top: 4px;
+    font-size: 0.78rem;
+  }
+
+  .umc-gallery {
+    min-height: calc(100vh - 120px);
+    display: grid;
+    align-content: center;
+    gap: 20px;
+  }
+
+  .umc-gallery header {
+    margin-bottom: 0;
+  }
+
+  .umc-gallery h2 {
+    font-size: clamp(2.4rem, 3vw, 3rem);
+  }
+
+  .umc-gallery header p {
+    font-size: 1.14rem;
+  }
+
+  .gallery-grid {
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .umc-gallery figure {
+    min-height: auto;
+  }
+
+  .gallery-card {
+    grid-template-rows: clamp(220px, 28vh, 270px) auto;
+  }
+
+  .gallery-card h3 {
+    font-size: 1.55rem;
+  }
+
+  .gallery-card p {
+    font-size: 1.04rem;
+  }
+
+  .umc-testimonials {
+    min-height: calc(100vh - 140px);
+    display: grid;
+    align-content: center;
+    gap: 20px;
+  }
+
+  .umc-testimonials h2 {
+    font-size: clamp(2.4rem, 3vw, 3rem);
+  }
+
+  .testimonial-grid {
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .testimonial-head {
+    margin-bottom: 14px;
+  }
+
+  .testimonial-avatar {
+    width: 76px;
+    height: 76px;
+  }
+
+  .testimonial-support-image {
+    width: 132px;
+    height: 76px;
+  }
+
+  .umc-testimonials cite {
+    font-size: 1.14rem;
+  }
+
+  .testimonial-quote {
+    font-size: 1.08rem;
+  }
+
+  .umc-health-tips {
+    min-height: calc(100vh - 120px);
+    padding: 30px;
+    display: grid;
+    align-content: center;
+    gap: 14px;
+  }
+
+  .umc-health-tips h2 {
+    font-size: clamp(2.4rem, 3vw, 3rem);
+    margin-bottom: 10px;
+  }
+
+  .health-tips-grid {
+    margin-top: 4px;
+    gap: 14px;
+  }
+
+  .health-tip-card {
+    min-height: 340px;
+    grid-template-rows: 180px 1fr;
+  }
+
+  .health-tip-content {
+    padding: 18px;
+  }
+
+  .health-tip-content h3 {
+    font-size: 1.4rem;
+  }
+
+  .health-tip-content p {
+    font-size: 1.04rem;
+    line-height: 1.6;
+  }
+
+  .umc-contact {
+    min-height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    align-content: center;
+    align-items: stretch;
+  }
+
+  .contact-panel {
+    min-height: 380px;
+    padding: 14px;
+  }
+
+  .contact-info-panel h2 {
+    margin-bottom: 6px;
+  }
+
+  .contact-info-item {
+    padding: 8px 10px;
+  }
+
+  .contact-info-item h3 {
+    font-size: 0.92rem;
+  }
+
+  .contact-info-item p,
+  .contact-form label {
+    font-size: 0.82rem;
+  }
+
+  .contact-map-grid {
+    min-height: 104px;
+  }
+
+  .contact-form-panel h3 {
+    margin-bottom: 6px;
+  }
+
+  .contact-form {
+    gap: 6px;
+  }
+
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    font-size: 0.82rem;
+  }
+
+  .contact-form input,
+  .contact-form select {
+    height: 38px;
+  }
+
+  .contact-form textarea {
+    min-height: 86px;
+  }
+
+  .contact-form button {
+    height: 38px;
+    font-size: 0.84rem;
+  }
+
+  .umc-footer {
+    min-height: 180px;
+  }
+
+  .footer-column-image {
+    height: 96px;
+  }
+
+  .footer-copy-image {
+    height: 110px;
+  }
+}
+
+@media (max-width: 1030px) {
+  .umc-nav {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'brand auth'
+      'links links';
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+  }
+
+  .umc-brand {
+    grid-area: brand;
+  }
+
+  .umc-auth {
+    grid-area: auth;
+  }
+
+  .umc-links {
+    grid-area: links;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .umc-hero,
+  .about-hero,
+  .about-values,
+  .history-grid,
+  .history-milestones,
+  .history-gallery,
+  .facilities-grid,
+  .facilities-support-grid,
+  .facility-gallery,
+  .doctor-grid,
+  .service-grid,
+  .health-tips-grid,
+  .umc-appointment,
+  .umc-contact,
+  .umc-stats,
+  .testimonial-grid,
+  .umc-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .health-tips-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .testimonial-footer {
+    flex-wrap: wrap;
+  }
+
+  .umc-appointment {
+    gap: 14px;
+    grid-template-columns: 1fr;
+  }
+
+  .umc-appointment article,
+  .appointment-highlight {
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .appointment-highlight p {
+    max-width: 100%;
+  }
+
+  .appointment-highlight a {
+    margin-top: 10px;
+    font-size: 1.85rem;
+  }
+
+  .umc-about {
+    padding-bottom: 16px;
+  }
+
+  .umc-footer {
+    padding: 18px 14px 18px;
+    gap: 18px;
+  }
+
+  .umc-footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-intro {
+    padding-right: 0;
+  }
+
+  .about-intro h2 {
+    max-width: 100%;
+    line-height: 1.04;
+  }
+
+  .about-hero-image {
+    min-height: 280px;
+  }
+
+  .about-outcome-card {
+    position: static;
+    transform: none;
+    width: 100%;
+  }
+
+  .footer-column-image {
+    max-width: 100%;
+    height: 110px;
+  }
+
+  .footer-copy-image {
+    width: min(260px, 100%);
+    height: 96px;
+  }
+
+  .umc-footer-column a {
+    font-size: 0.96rem;
+  }
+
+  .umc-footer-action {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .umc-footer-action > div {
+    width: 100%;
+  }
+
+  .umc-footer-action a {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .umc-footer-bottom {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .umc-footer-copy {
+    font-size: 0.9rem;
+  }
+
+  .contact-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-quick-actions {
+    gap: 8px;
+  }
+
+  .contact-quick-link {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .umc-hero img {
+    min-height: 240px;
+  }
+
+  .umc-hero {
+    min-height: auto;
+  }
+
+  .umc-hero > article {
+    padding: 0;
+  }
+
+  .umc-hero h1 {
+    font-size: clamp(1.8rem, 8vw, 3rem);
+    line-height: 1.15;
+  }
+
+  .umc-hero p {
+    font-size: 1rem;
+  }
+
+  .umc-emergency {
+    right: 12px;
+    top: auto;
+    bottom: 72px;
+  }
+
+  .umc-chat {
+    right: 12px;
+    bottom: 16px;
+  }
+}
+
+@media (max-width: 700px) {
+  .umc-nav {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'brand auth'
+      'links links';
+    text-align: left;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .umc-brand {
+    justify-self: start;
+  }
+
+  .umc-auth {
+    justify-self: end;
+  }
+
+  .umc-links {
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .history-timeline li {
+    grid-template-columns: 1fr;
+    justify-content: start;
+    align-items: start;
+  }
+
+  .facility-hours li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-card {
+    grid-template-rows: 210px auto;
+  }
+
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonial-card {
+    padding: 16px;
+  }
+
+  .testimonial-head {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .testimonial-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .testimonial-support-image {
+    width: 100px;
+    height: 62px;
+  }
+
+  .health-tips-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .health-tip-card {
+    grid-template-rows: 180px 1fr;
+  }
+
+  .umc-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .contact-panel {
+    padding: 18px;
+  }
+
+  .contact-form-panel h3,
+  .contact-info-panel h2 {
+    font-size: clamp(1.2rem, 6vw, 1.55rem);
+  }
+
+  .contact-map-grid {
+    min-height: 120px;
+  }
+
+  .umc-footer-socials,
+  .umc-footer-legal {
+    flex-wrap: wrap;
+  }
+
+  .umc-footer-action > div {
+    flex-direction: column;
+  }
+
+  .umc-footer-action a {
+    width: 100%;
+  }
+
+  .umc-emergency-panel {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .umc-chat-panel {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .umc-chat-head {
+    flex-direction: column;
+  }
+
+  .umc-chat-compose {
+    grid-template-columns: 1fr;
+  }
+}
