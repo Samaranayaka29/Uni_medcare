@@ -744,9 +744,8 @@ const Home = () => {
 			)}
 
 			<footer className="umc-footer">
-				<div className="umc-footer-grid">
-					<section className="umc-footer-brand-block" aria-label="University Medical Center information">
-						<p className="umc-footer-kicker">University Health Network</p>
+				<div className="umc-footer-shell">
+					<section className="umc-footer-brand-col" aria-label="University Medical Center information">
 						<a className="umc-footer-brand" href="#home">
 							<span className="umc-brand-mark" aria-hidden="true">
 								+
@@ -756,94 +755,55 @@ const Home = () => {
 								<strong>Care</strong>
 							</span>
 						</a>
-						<p>
-							Trusted campus healthcare with compassionate professionals, modern diagnostics, and
-							24/7 emergency guidance.
-						</p>
-						<div className="umc-footer-meta" aria-label="Campus center quick facts">
-							<div className="umc-footer-meta-item">
-								<span>Open Hours</span>
-								<strong>Mon - Sat, 7:00 AM - 8:00 PM</strong>
-							</div>
-							<div className="umc-footer-meta-item">
-								<span>Campus Desk</span>
-								<strong>Near Main Library, Ground Floor</strong>
-							</div>
-						</div>
-						<div className="umc-footer-badges">
-							<span>24/7 Emergency</span>
-							<span>Student Focused</span>
-							<span>Trusted Care</span>
+						<h3>University Medical Center</h3>
+						<p>Trusted campus healthcare for students and staff with modern, compassionate support.</p>
+						<div className="umc-footer-social" aria-label="Social media links">
+							<a href="#" onClick={(event) => event.preventDefault()} aria-label="Facebook">
+								f
+							</a>
+							<a href="#" onClick={(event) => event.preventDefault()} aria-label="YouTube">
+								yt
+							</a>
+							<a href="#" onClick={(event) => event.preventDefault()} aria-label="TikTok">
+								tt
+							</a>
 						</div>
 					</section>
 
-					<nav className="umc-footer-column" aria-label="Footer quick links">
+					<nav className="umc-footer-col" aria-label="Footer quick links">
 						<h4>Quick Links</h4>
 						<a href="#home">Home</a>
-						<a href="#about">About Us</a>
 						<a href="#services">Services</a>
+						<a href="#about">About Us</a>
 						<a href="#doctors">Doctors</a>
 						<a href="#appointments">Appointments</a>
-						<a href="#health-tips">Health Tips</a>
-						<a href="#reviews">Reviews</a>
 						<a href="#contact">Contact</a>
 					</nav>
 
-					<div className="umc-footer-column">
-						<h4>Contact Desk</h4>
-						<p className="umc-footer-contact">+1 (555) 0123-4567</p>
-						<p className="umc-footer-contact">care@clinicsanctuary.com</p>
-						<p className="umc-footer-note">Response support available within 5-10 minutes on working hours.</p>
-						<div className="umc-footer-socials">
-							<a href="#" onClick={(event) => event.preventDefault()}>
-								Facebook
-							</a>
-							<a href="#" onClick={(event) => event.preventDefault()}>
-								Instagram
-							</a>
-							<a href="#" onClick={(event) => event.preventDefault()}>
-								LinkedIn
-							</a>
-						</div>
-					</div>
+					<section className="umc-footer-col" aria-label="Footer contact information">
+						<h4>Contact Info</h4>
+						<a href="tel:+155501234567">+1 (555) 0123-4567</a>
+						<a href="mailto:care@clinicsanctuary.com">care@clinicsanctuary.com</a>
+						<p>102 Precision Way, Serenity Park, NY 10012</p>
+					</section>
 
-					<section className="umc-footer-column" aria-label="Campus wellness update">
-						<h4>Campus Wellness</h4>
-						<p className="umc-footer-note">Monthly awareness sessions and preventive checkup drives for students.</p>
-						<p className="umc-footer-note">Open Monday to Saturday for consultations, counseling, and lab support.</p>
-						<div className="umc-footer-badges">
-							<span>Lab Reports</span>
-							<span>Mental Health</span>
-							<span>Vaccination</span>
+					<section className="umc-footer-col" aria-label="About university medical center">
+						<h4>About</h4>
+						<div className="umc-footer-about-card">
+							<p>
+								We provide accessible healthcare, preventive checkups, emergency care, and mental
+								wellness support for the university community.
+							</p>
+							<span>Powered by Uni MedCare Digital Desk</span>
 						</div>
 					</section>
 				</div>
 
-				<div className="umc-footer-action" aria-label="Footer quick actions">
-					<p>
-						Need immediate help with appointments or emergency support? Reach our care team now.
-					</p>
-					<div>
-						<a href="#appointments">Book Appointment</a>
-						<a href="tel:+155501234567" className="secondary">
-							Call Help Desk
-						</a>
-					</div>
-				</div>
-
 				<div className="umc-footer-bottom">
-					<p className="umc-footer-copy">Copyright 2026 University Medical Center. All rights reserved.</p>
-					<div className="umc-footer-legal">
-						<a href="#" onClick={(event) => event.preventDefault()}>
-							Privacy
-						</a>
-						<a href="#" onClick={(event) => event.preventDefault()}>
-							Terms
-						</a>
-						<a href="#" onClick={(event) => event.preventDefault()}>
-							Accessibility
-						</a>
-					</div>
+					<p>Copyright 2026 University Medical Center. All Rights Reserved.</p>
+					<p>
+						Made with <span aria-hidden="true">♥</span> by Uni MedCare
+					</p>
 				</div>
 			</footer>
 		</div>

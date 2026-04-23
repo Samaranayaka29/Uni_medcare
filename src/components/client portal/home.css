@@ -1620,287 +1620,183 @@ main {
 
 .umc-footer {
   margin: 0 auto;
-  width: calc(100% - 8px);
+  width: calc(100% - 10px);
   max-width: 100%;
-  padding: 14px 14px 12px;
-  border-radius: 20px;
-  border: 1px solid #c8dcf5;
+  border-radius: 0;
+  border: 0;
+  padding: 36px 20px 14px;
+  color: #c7d8f5;
   background:
-    radial-gradient(circle at 4% 7%, rgba(146, 209, 255, 0.26) 0, transparent 34%),
-    radial-gradient(circle at 97% 87%, rgba(112, 211, 207, 0.24) 0, transparent 38%),
-    linear-gradient(180deg, #ffffff 0%, #f3f9ff 100%);
-  box-shadow: 0 18px 38px rgba(10, 65, 146, 0.13);
-  position: relative;
-  overflow: hidden;
+    radial-gradient(circle at 7% 5%, rgba(23, 52, 95, 0.85) 0, transparent 35%),
+    radial-gradient(circle at 96% 92%, rgba(34, 78, 136, 0.48) 0, transparent 34%),
+    linear-gradient(110deg, #081a44 0%, #122850 55%, #1d3358 100%);
+  box-shadow: 0 -14px 36px rgba(3, 12, 34, 0.28);
 }
 
-.umc-footer-grid {
+.umc-footer-shell {
+  max-width: min(1380px, 96vw);
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 1.28fr) repeat(3, minmax(0, 0.78fr));
-  gap: 12px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1.15fr) repeat(3, minmax(0, 0.7fr));
+  gap: clamp(12px, 1.4vw, 20px);
 }
 
+.umc-footer a {
+  color: #c7d8f5;
+}
+
+.umc-footer h3,
 .umc-footer h4 {
-  margin-bottom: 8px;
-  font-size: 1.02rem;
-  color: #17345e;
+  color: #ffffff;
 }
 
-.umc-footer-column {
+.umc-footer-brand-col {
   display: grid;
-  gap: 7px;
   align-content: start;
-  padding: 11px;
-  border-radius: 14px;
-  border: 1px solid rgba(161, 197, 238, 0.55);
-  background: linear-gradient(170deg, #fbfdff, #eef5ff);
-}
-
-.umc-footer-brand-block {
-  display: grid;
-  gap: 7px;
-  padding: 12px;
-  border-radius: 16px;
-  border: 1px solid rgba(159, 203, 245, 0.58);
-  background: linear-gradient(160deg, #ffffff, #edf5ff);
-}
-
-.umc-footer-kicker {
-  width: fit-content;
-  margin: 0;
-  padding: 5px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(32, 99, 192, 0.28);
-  background: #e8f1ff;
-  color: #1a57ae;
-  font-size: 0.69rem;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  gap: 6px;
 }
 
 .umc-footer-brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   text-decoration: none;
-  color: #0f2547;
-  font-weight: 600;
-  font-size: 0.92rem;
-  line-height: 1.15;
+  color: #f2f6ff;
+  font-size: 0.94rem;
+  line-height: 1.1;
+  font-weight: 700;
 }
 
 .umc-footer-brand strong {
   display: block;
-  color: var(--umc-blue);
+  color: #ff3645;
 }
 
-.umc-footer-brand-block p {
+.umc-footer-brand-col h3 {
   margin: 0;
-  color: #466183;
-  line-height: 1.5;
-  font-size: 0.84rem;
-  max-width: 40ch;
+  font-size: 1.6rem;
+  line-height: 1.08;
 }
 
-.umc-footer-meta {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.umc-footer-meta-item {
-  display: grid;
-  gap: 2px;
-  padding: 8px 9px;
-  border-radius: 10px;
-  border: 1px solid rgba(170, 205, 243, 0.62);
-  background: #f5f9ff;
-}
-
-.umc-footer-meta-item span {
-  color: #4f6c93;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.umc-footer-meta-item strong {
-  color: #173b73;
-  font-size: 0.76rem;
-  line-height: 1.35;
-}
-
-.umc-footer-badges {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.umc-footer-badges span {
-  padding: 4px 9px;
-  border-radius: 999px;
-  background: #e4efff;
-  border: 1px solid #bfd8fb;
-  color: #144fa4;
-  font-size: 0.68rem;
-  font-weight: 700;
-}
-
-.umc-footer-column a {
-  width: fit-content;
-  font-size: 0.82rem;
-  line-height: 1.3;
-  padding: 3px 0;
-  position: relative;
-}
-
-.umc-footer-column a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -1px;
-  width: 100%;
-  height: 1px;
-  transform: scaleX(0);
-  transform-origin: left;
-  background: linear-gradient(90deg, #1a66cb, #22a6b4);
-  transition: transform 0.2s ease;
-}
-
-.umc-footer-column a:hover::after {
-  transform: scaleX(1);
-}
-
-.umc-footer-contact {
+.umc-footer-brand-col p {
   margin: 0;
-  color: #2e5585;
-  font-weight: 600;
-  font-size: 0.83rem;
+  color: #9db6dc;
+  max-width: 38ch;
+  font-size: 0.9rem;
 }
 
-.umc-footer-socials {
+.umc-footer-social {
   margin-top: 2px;
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.umc-footer-socials a {
-  text-decoration: none;
-  padding: 5px 10px;
-  border-radius: 999px;
-  border: 1px solid #bfd5f4;
-  color: #1a58ac;
-  background: #eff5ff;
-  font-size: 0.74rem;
-  font-weight: 700;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.umc-footer-socials a:hover {
-  background: #deedff;
-  transform: translateY(-1px);
-}
-
-.umc-footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 20px;
-  width: min(270px, 34%);
-  height: 4px;
-  border-radius: 0 0 999px 999px;
-  background: linear-gradient(90deg, var(--umc-blue), var(--umc-cyan) 74%);
-}
-
-.umc-footer-note {
-  margin: 0;
-  color: #4f678c;
-  line-height: 1.35;
-  font-size: 0.8rem;
-}
-
-.umc-footer-action {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(148, 192, 240, 0.55);
-  background: linear-gradient(96deg, #eaf4ff 0%, #f7fbff 55%, #e8fbfb 100%);
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-  align-items: center;
-}
-
-.umc-footer-action p {
-  margin: 0;
-  color: #2f527f;
-  font-size: 0.82rem;
-  font-weight: 600;
-}
-
-.umc-footer-action > div {
-  display: flex;
-  flex-wrap: wrap;
   gap: 8px;
 }
 
-.umc-footer-action a {
+.umc-footer-social a {
+  width: 40px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  background: linear-gradient(135deg, #1b67cb, #0f4f95);
-  color: #ffffff;
-  font-size: 0.76rem;
-  font-weight: 700;
+  border-radius: 10px;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-transform: uppercase;
+  color: #d9e7ff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid rgba(125, 159, 209, 0.35);
+  background: rgba(160, 191, 239, 0.16);
+  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.umc-footer-action a:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 20px rgba(18, 76, 158, 0.2);
+.umc-footer-social a:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 77, 91, 0.64);
+  background: rgba(255, 77, 91, 0.12);
 }
 
-.umc-footer-action a.secondary {
-  border-color: #a8c9ef;
-  background: #f5f9ff;
-  color: #1b5aae;
-}
-
-.umc-footer-bottom {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(14, 90, 209, 0.18);
+.umc-footer-col {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 10px;
-  align-items: center;
-}
-
-.umc-footer-copy {
-  margin: 0;
-  color: #5d7598;
-  font-size: 0.76rem;
-}
-
-.umc-footer-legal {
-  display: flex;
-  align-items: center;
+  align-content: start;
   gap: 8px;
 }
 
-.umc-footer-legal a {
+.umc-footer-col h4 {
+  margin: 0;
+  position: relative;
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.umc-footer-col h4::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 4px;
+  width: 3px;
+  height: 20px;
+  border-radius: 6px;
+  background: #ff2738;
+}
+
+.umc-footer-col a,
+.umc-footer-col p {
+  margin: 0;
+  color: #9fb9df;
   text-decoration: none;
-  color: #305d99;
-  font-size: 0.76rem;
+  font-size: 0.9rem;
+}
+
+.umc-footer-col a {
+  width: fit-content;
+}
+
+.umc-footer-col a:hover {
+  color: #ffffff;
+}
+
+.umc-footer-about-card {
+  border: 1px solid rgba(142, 174, 220, 0.28);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(146, 175, 221, 0.08);
+  display: grid;
+  gap: 8px;
+}
+
+.umc-footer-about-card p {
+  margin: 0;
+  color: #d5e4ff;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.umc-footer-about-card span {
+  padding-top: 8px;
+  border-top: 1px solid rgba(167, 196, 237, 0.24);
+  color: #9cb4d9;
+  font-size: 0.84rem;
   font-weight: 600;
+}
+
+.umc-footer-bottom {
+  max-width: min(1380px, 96vw);
+  margin: 22px auto 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(144, 176, 223, 0.24);
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+}
+
+.umc-footer-bottom p {
+  margin: 0;
+  color: #a8bfdc;
+  font-size: 0.9rem;
+}
+
+.umc-footer-bottom span {
+  color: #ff2f41;
 }
 
 .umc-emergency,
@@ -2511,15 +2407,7 @@ main {
   }
 
   .umc-footer {
-    min-height: 180px;
-  }
-
-  .footer-column-image {
-    height: 96px;
-  }
-
-  .footer-copy-image {
-    height: 110px;
+    min-height: 220px;
   }
 }
 
@@ -2607,11 +2495,10 @@ main {
   }
 
   .umc-footer {
-    padding: 18px 14px 18px;
-    gap: 18px;
+    padding: 26px 14px 14px;
   }
 
-  .umc-footer-grid {
+  .umc-footer-shell {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2634,41 +2521,19 @@ main {
     width: 100%;
   }
 
-  .footer-column-image {
-    max-width: 100%;
-    height: 110px;
+  .umc-footer-col h4 {
+    font-size: 1.28rem;
   }
 
-  .footer-copy-image {
-    width: min(260px, 100%);
-    height: 96px;
-  }
-
-  .umc-footer-column a {
-    font-size: 0.96rem;
-  }
-
-  .umc-footer-action {
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
-
-  .umc-footer-action > div {
-    width: 100%;
-  }
-
-  .umc-footer-action a {
-    flex: 1;
-    min-width: 140px;
+  .umc-footer-col a,
+  .umc-footer-col p {
+    font-size: 0.88rem;
   }
 
   .umc-footer-bottom {
-    grid-template-columns: 1fr;
+    margin-top: 14px;
+    flex-direction: column;
     align-items: start;
-  }
-
-  .umc-footer-copy {
-    font-size: 0.9rem;
   }
 
   .contact-form-row {
@@ -2792,9 +2657,13 @@ main {
     grid-template-rows: 180px 1fr;
   }
 
-  .umc-footer-grid {
+  .umc-footer-shell {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
+  }
+
+  .umc-footer {
+    padding: 22px 12px 12px;
   }
 
   .contact-panel {
@@ -2810,17 +2679,12 @@ main {
     min-height: 120px;
   }
 
-  .umc-footer-socials,
-  .umc-footer-legal {
-    flex-wrap: wrap;
+  .umc-footer-col h4 {
+    font-size: 1.18rem;
   }
 
-  .umc-footer-action > div {
-    flex-direction: column;
-  }
-
-  .umc-footer-action a {
-    width: 100%;
+  .umc-footer-bottom p {
+    font-size: 0.84rem;
   }
 
   .umc-emergency-panel {
