@@ -582,6 +582,29 @@ label select {
   margin: 0;
 }
 
+.dashboard-welcome-card {
+  display: grid;
+  gap: 4px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.dashboard-welcome-card p {
+  margin: 0;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.dashboard-welcome-card span {
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(242, 249, 255, 0.94);
+}
+
 .hero-intro h2:not(.hero-title) {
   margin: 6px 0 2px;
   font-size: 1.6rem;

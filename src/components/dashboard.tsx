@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import './dashboard.css'
 import doctorImg from '../assets/doctor-img1.jpeg'
 
@@ -73,6 +73,18 @@ type RegisteredUser = {
   name: string
   email: string
   age: number | null
+}
+
+type DashboardLocationState = {
+  newlyRegistered?: boolean
+  backendSyncError?: string
+  studentProfile?: {
+    firstName: string
+    lastName: string
+    studentId: string
+    faculty: string
+    email: string
+  }
 }
 
 const initialAppointments: Appointment[] = [
@@ -298,6 +310,8 @@ const slotsByView: Record<ViewMode, string[]> = {
 }
 
 const Dashboard = () => {
+  const location = useLocation()
+  const locationState = location.state as DashboardLocationState | null
   const darkMode = false
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -332,6 +346,15 @@ const Dashboard = () => {
   const [bookSeverity, setBookSeverity] = useState<Severity>('pending')
   const [registeredUsers, setRegisteredUsers] = useState<RegisteredUser[]>([])
   const [isUsersLoading, setIsUsersLoading] = useState(true)
+
+  const studentProfile = locationState?.studentProfile
+  const studentName = useMemo(() => {
+    if (!studentProfile) {
+      return ''
+    }
+
+    return `${studentProfile.firstName} ${studentProfile.lastName}`.trim()
+  }, [studentProfile])
 
   useEffect(() => {
     const timer = window.setTimeout(() => setLoading(false), 900)
@@ -846,6 +869,16 @@ const Dashboard = () => {
           <section className="hero panel">
             <div className="hero-intro">
               <p className="eyebrow">AI HEALTH INSIGHTS</p>
+              {locationState?.newlyRegistered && studentProfile && (
+                <div className="dashboard-welcome-card" role="status" aria-live="polite">
+                  <p>Welcome aboard{studentName ? `, ${studentName}` : ''}.</p>
+                  <span>
+                    {studentProfile.studentId} | {studentProfile.faculty}
+                  </span>
+                  <span>{studentProfile.email}</span>
+                  {locationState.backendSyncError && <span>{locationState.backendSyncError}</span>}
+                </div>
+              )}
               <h2 className="hero-title">
                 <span>Real-time Clinical</span>
                 <span className="hero-title-accent">Intelligence</span>

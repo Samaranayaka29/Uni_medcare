@@ -64,35 +64,53 @@ const Register = () => {
 
 	const handleRegister = async () => {
 		try {
+			const studentProfile = {
+				firstName: form.firstName.trim(),
+				lastName: form.lastName.trim(),
+				studentId: form.studentId.trim(),
+				faculty: form.faculty.trim(),
+				email: form.email.trim(),
+			}
 			const registeredEmail = form.email.trim()
-			const registeredPassword = form.password
-			const user = await createUserWithEmailAndPassword(auth, registeredEmail, registeredPassword)
-			const response = await fetch('/api/users', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-				uid: user.user.uid,
-				name: `${form.firstName} ${form.lastName}`.trim(),
-				age: Number(form.age),
-				email: registeredEmail,
-				studentId: form.studentId,
-				faculty: form.faculty,
-				phone: form.phone,
-				}),
-			})
+			let backendSyncError = ''
+			const user = await createUserWithEmailAndPassword(auth, registeredEmail, form.password)
 
-			if (!response.ok) {
-				throw new Error('Failed to save user in backend database.')
+			try {
+				const response = await fetch('/api/users', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						uid: user.user.uid,
+						name: `${form.firstName} ${form.lastName}`.trim(),
+						age: Number(form.age),
+						email: registeredEmail,
+						studentId: form.studentId,
+						faculty: form.faculty,
+						phone: form.phone,
+					}),
+				})
+
+				if (!response.ok) {
+					const data = (await response.json().catch(() => null)) as { error?: string } | null
+					backendSyncError =
+						typeof data?.error === 'string' && data.error.trim().length > 0
+							? data.error
+							: 'Account created, but profile sync to backend is temporarily unavailable.'
+					console.warn('Backend profile sync failed:', backendSyncError)
+				}
+			} catch (syncError) {
+				backendSyncError = 'Account created, but profile sync to backend is temporarily unavailable.'
+				console.warn('Backend profile sync failed:', syncError)
 			}
 
 			console.log('User created:', user)
-			setSuccessMessage('Registration successful. You can now sign in to the student portal.')
+			setSuccessMessage('Registration successful. Redirecting to your dashboard...')
 			setForm(initialForm)
-			navigate('/login', {
+			navigate('/dashboard', {
 				state: {
-					prefillEmail: registeredEmail,
-					prefillPassword: registeredPassword,
-					autoSignIn: true,
+					newlyRegistered: true,
+					studentProfile,
+					backendSyncError,
 				},
 			})
 		} catch (error) {
