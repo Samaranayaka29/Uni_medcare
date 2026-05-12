@@ -14,6 +14,7 @@ import Register from './components/register'
 
 // Admin Portal Components
 import AdminDashboard from './components/admin/adminDashboard'
+import AdminLogin from './components/admin/AdminLogin.jsx'
 import AdminUsers from './components/admin/adminUsers'
 import AdminDoctors from './components/admin/adminDoctors'
 import AdminAppointments from './components/admin/adminAppointments'
@@ -38,6 +39,7 @@ function App() {
       <Route path="/logout" element={<Logout />} />
 
       {/* Admin Portal Routes */}
+      <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/users" element={<AdminUsers />} />
       <Route path="/admin/doctors" element={<AdminDoctors />} />

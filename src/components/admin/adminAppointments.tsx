@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { auth } from '../../firebase'
 import './adminAppointments.css'
 import AdminNavigation from './adminNavigation'
+import { getAdminToken, verifyAdminToken } from '../../utils/adminAuth'
 
 type Appointment = {
   id: string
@@ -10,82 +10,53 @@ type Appointment = {
   doctorName: string
   date: string
   time: string
-  status: 'scheduled' | 'completed' | 'cancelled'
+  status: 'Pending' | 'Approved' | 'Completed' | 'Cancelled'
   reason: string
   room: string
 }
+
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000'
 
 const AdminAppointments = () => {
   const navigate = useNavigate()
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
-  const [filterStatus, setFilterStatus] = useState<'all' | 'scheduled' | 'completed' | 'cancelled'>('all')
+  const [filterStatus, setFilterStatus] = useState<'all' | Appointment['status']>('all')
+  const [error, setError] = useState('')
+
+  const authHeaders = () => ({
+    Authorization: `Bearer ${getAdminToken() ?? ''}`,
+    'Content-Type': 'application/json',
+  })
+
+  const loadAppointments = async () => {
+    const response = await fetch(`${API_URL}/api/appointments`, {
+      headers: authHeaders(),
+    })
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({ error: 'Failed to load appointments' }))
+      throw new Error(data.error ?? 'Failed to load appointments')
+    }
+
+    const data = await response.json()
+    setAppointments(data)
+  }
 
   useEffect(() => {
     const checkAdminAndLoadAppointments = async () => {
       try {
-        const user = auth.currentUser
-        if (!user) {
-          navigate('/login')
+        const admin = await verifyAdminToken()
+
+        if (!admin) {
+          navigate('/admin/login')
           return
         }
 
-        const idTokenResult = await user.getIdTokenResult()
-        const isAdminUser =
-          idTokenResult.claims.admin === true || user.email === 'admin@unimedcare.com'
-
-        if (!isAdminUser) {
-          navigate('/dashboard')
-          return
-        }
-
-        // Mock data
-        const mockAppointments: Appointment[] = [
-          {
-            id: 'apt1',
-            patientName: 'John Doe',
-            doctorName: 'Dr. Sarah Smith',
-            date: '2026-05-15',
-            time: '09:00',
-            status: 'scheduled',
-            reason: 'Regular Checkup',
-            room: '101',
-          },
-          {
-            id: 'apt2',
-            patientName: 'Jane Wilson',
-            doctorName: 'Dr. Michael Brown',
-            date: '2026-05-14',
-            time: '14:30',
-            status: 'completed',
-            reason: 'Follow-up',
-            room: '205',
-          },
-          {
-            id: 'apt3',
-            patientName: 'Alex Johnson',
-            doctorName: 'Dr. Emily Davis',
-            date: '2026-05-16',
-            time: '10:15',
-            status: 'scheduled',
-            reason: 'Vaccination',
-            room: '110',
-          },
-          {
-            id: 'apt4',
-            patientName: 'Sarah Chen',
-            doctorName: 'Dr. Sarah Smith',
-            date: '2026-05-12',
-            time: '11:00',
-            status: 'cancelled',
-            reason: 'Emergency',
-            room: '102',
-          },
-        ]
-
-        setAppointments(mockAppointments)
+        await loadAppointments()
       } catch (error) {
-        console.error('Error loading appointments:', error)
+        const message = error instanceof Error ? error.message : 'Error loading appointments'
+        setError(message)
       } finally {
         setLoading(false)
       }
@@ -94,8 +65,30 @@ const AdminAppointments = () => {
     checkAdminAndLoadAppointments()
   }, [navigate])
 
+  const updateAppointmentStatus = async (id: string, status: Appointment['status']) => {
+    setError('')
+    try {
+      const response = await fetch(`${API_URL}/api/appointments/${id}/status`, {
+        method: 'PATCH',
+        headers: authHeaders(),
+        body: JSON.stringify({ status }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: 'Failed to update status' }))
+        throw new Error(data.error ?? 'Failed to update status')
+      }
+
+      const updated = await response.json()
+      setAppointments((current) => current.map((item) => (item.id === id ? updated : item)))
+    } catch (updateError) {
+      const message = updateError instanceof Error ? updateError.message : 'Failed to update appointment'
+      setError(message)
+    }
+  }
+
   const filteredAppointments = appointments.filter(
-    (apt) => filterStatus === 'all' || apt.status === filterStatus
+    (appointment) => filterStatus === 'all' || appointment.status === filterStatus,
   )
 
   if (loading) {
@@ -117,17 +110,19 @@ const AdminAppointments = () => {
       <div className="admin-content">
         <div className="page-header">
           <h1>Appointment Management</h1>
+          <p>Approve, cancel, or complete appointments</p>
         </div>
 
-        {/* Filter Tabs */}
+        {error ? <div className="error-banner">{error}</div> : null}
+
         <div className="filter-tabs">
-          {(['all', 'scheduled', 'completed', 'cancelled'] as const).map((status) => (
+          {(['all', 'Pending', 'Approved', 'Completed', 'Cancelled'] as const).map((status) => (
             <button
               key={status}
               className={`tab ${filterStatus === status ? 'active' : ''}`}
               onClick={() => setFilterStatus(status)}
             >
-              {status === 'all' ? 'All' : status.charAt(0).toUpperCase() + status.slice(1)}
+              {status === 'all' ? 'All' : status}
               <span className="count">
                 ({appointments.filter((a) => status === 'all' || a.status === status).length})
               </span>
@@ -135,7 +130,6 @@ const AdminAppointments = () => {
           ))}
         </div>
 
-        {/* Appointments Table */}
         <div className="appointments-table-wrapper">
           {filteredAppointments.length > 0 ? (
             <table className="appointments-table">
@@ -151,26 +145,29 @@ const AdminAppointments = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredAppointments.map((apt) => (
-                  <tr key={apt.id}>
-                    <td>{apt.patientName}</td>
-                    <td>{apt.doctorName}</td>
+                {filteredAppointments.map((appointment) => (
+                  <tr key={appointment.id}>
+                    <td>{appointment.patientName}</td>
+                    <td>{appointment.doctorName}</td>
                     <td>
-                      {new Date(apt.date).toLocaleDateString()} at {apt.time}
+                      {new Date(appointment.date).toLocaleDateString()} at {appointment.time}
                     </td>
-                    <td>{apt.reason}</td>
-                    <td className="room-cell">{apt.room}</td>
+                    <td>{appointment.reason}</td>
+                    <td className="room-cell">{appointment.room}</td>
                     <td>
-                      <span className={`status-badge status-${apt.status}`}>
-                        {apt.status}
+                      <span className={`status-badge status-${appointment.status.toLowerCase()}`}>
+                        {appointment.status}
                       </span>
                     </td>
                     <td className="actions-cell">
-                      <button className="btn-action edit" title="Edit">
-                        ✏️
+                      <button className="btn-action edit" onClick={() => updateAppointmentStatus(appointment.id, 'Approved')}>
+                        Approve
                       </button>
-                      <button className="btn-action delete" title="Delete">
-                        🗑️
+                      <button className="btn-action edit" onClick={() => updateAppointmentStatus(appointment.id, 'Completed')}>
+                        Complete
+                      </button>
+                      <button className="btn-action delete" onClick={() => updateAppointmentStatus(appointment.id, 'Cancelled')}>
+                        Cancel
                       </button>
                     </td>
                   </tr>
@@ -184,25 +181,22 @@ const AdminAppointments = () => {
           )}
         </div>
 
-        {/* Summary Cards */}
         <div className="summary-section">
           <div className="summary-card">
-            <h3>Today's Appointments</h3>
-            <p className="summary-number">
-              {appointments.filter((a) => a.date === new Date().toISOString().split('T')[0]).length}
-            </p>
+            <h3>Pending</h3>
+            <p className="summary-number">{appointments.filter((a) => a.status === 'Pending').length}</p>
           </div>
           <div className="summary-card">
-            <h3>Pending</h3>
-            <p className="summary-number">{appointments.filter((a) => a.status === 'scheduled').length}</p>
+            <h3>Approved</h3>
+            <p className="summary-number">{appointments.filter((a) => a.status === 'Approved').length}</p>
           </div>
           <div className="summary-card">
             <h3>Completed</h3>
-            <p className="summary-number">{appointments.filter((a) => a.status === 'completed').length}</p>
+            <p className="summary-number">{appointments.filter((a) => a.status === 'Completed').length}</p>
           </div>
           <div className="summary-card">
             <h3>Cancelled</h3>
-            <p className="summary-number">{appointments.filter((a) => a.status === 'cancelled').length}</p>
+            <p className="summary-number">{appointments.filter((a) => a.status === 'Cancelled').length}</p>
           </div>
         </div>
       </div>

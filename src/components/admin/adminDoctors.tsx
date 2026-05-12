@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { auth } from '../../firebase'
 import './adminDoctors.css'
 import AdminNavigation from './adminNavigation'
+import { verifyAdminToken } from '../../utils/adminAuth'
 
 type Doctor = {
   id: string
@@ -13,9 +13,16 @@ type Doctor = {
   hospital: string
   experience: number
   status: 'available' | 'busy' | 'offline'
-  patients: number
-  rating: number
-  joinDate: string
+}
+
+type DoctorForm = {
+  name: string
+  specialization: string
+  email: string
+  phone: string
+  hospital: string
+  experience: number
+  status: 'available' | 'busy' | 'offline'
 }
 
 const AdminDoctors = () => {
@@ -24,84 +31,58 @@ const AdminDoctors = () => {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [filterSpec, setFilterSpec] = useState('all')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [editingDoctorId, setEditingDoctorId] = useState<string | null>(null)
+  const [error, setError] = useState('')
+  const [form, setForm] = useState<DoctorForm>({
+    name: '',
+    specialization: '',
+    email: '',
+    phone: '',
+    hospital: '',
+    experience: 0,
+    status: 'available',
+  })
+
+  const loadDoctors = async () => {
+    const response = await fetch('/api/doctors')
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({ error: 'Failed to load doctors' }))
+      throw new Error(data.error ?? 'Failed to load doctors')
+    }
+
+    const data = await response.json()
+    setDoctors(data)
+  }
+
+  const resetForm = () => {
+    setForm({
+      name: '',
+      specialization: '',
+      email: '',
+      phone: '',
+      hospital: '',
+      experience: 0,
+      status: 'available',
+    })
+    setEditingDoctorId(null)
+  }
 
   useEffect(() => {
     const checkAdminAndLoadDoctors = async () => {
       try {
-        const user = auth.currentUser
-        if (!user) {
-          navigate('/login')
+        const admin = await verifyAdminToken()
+
+        if (!admin) {
+          navigate('/admin/login')
           return
         }
 
-        const idTokenResult = await user.getIdTokenResult()
-        const isAdminUser =
-          idTokenResult.claims.admin === true || user.email === 'admin@unimedcare.com'
-
-        if (!isAdminUser) {
-          navigate('/dashboard')
-          return
-        }
-
-        // Mock data
-        const mockDoctors: Doctor[] = [
-          {
-            id: 'd1',
-            name: 'Dr. Sarah Smith',
-            specialization: 'Cardiology',
-            email: 'sarah@hospital.com',
-            phone: '+1-555-0201',
-            hospital: 'Medical Center',
-            experience: 12,
-            status: 'available',
-            patients: 45,
-            rating: 4.8,
-            joinDate: '2025-06-15',
-          },
-          {
-            id: 'd2',
-            name: 'Dr. Michael Brown',
-            specialization: 'Neurology',
-            email: 'michael@hospital.com',
-            phone: '+1-555-0202',
-            hospital: 'Medical Center',
-            experience: 15,
-            status: 'busy',
-            patients: 38,
-            rating: 4.7,
-            joinDate: '2025-05-20',
-          },
-          {
-            id: 'd3',
-            name: 'Dr. Emily Davis',
-            specialization: 'Pediatrics',
-            email: 'emily@hospital.com',
-            phone: '+1-555-0203',
-            hospital: 'Children Hospital',
-            experience: 8,
-            status: 'available',
-            patients: 52,
-            rating: 4.9,
-            joinDate: '2025-08-10',
-          },
-          {
-            id: 'd4',
-            name: 'Dr. James Wilson',
-            specialization: 'Orthopedics',
-            email: 'james@hospital.com',
-            phone: '+1-555-0204',
-            hospital: 'Medical Center',
-            experience: 10,
-            status: 'offline',
-            patients: 28,
-            rating: 4.6,
-            joinDate: '2025-07-05',
-          },
-        ]
-
-        setDoctors(mockDoctors)
+        await loadDoctors()
       } catch (error) {
-        console.error('Error loading doctors:', error)
+        const message = error instanceof Error ? error.message : 'Error loading doctors'
+        setError(message)
       } finally {
         setLoading(false)
       }
@@ -119,6 +100,87 @@ const AdminDoctors = () => {
     const matchesSpec = filterSpec === 'all' || doctor.specialization === filterSpec
     return matchesSearch && matchesSpec
   })
+
+  const onChangeField = <K extends keyof DoctorForm>(key: K, value: DoctorForm[K]) => {
+    setForm((current) => ({ ...current, [key]: value }))
+  }
+
+  const handleCreateOrUpdate = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setError('')
+
+    if (!form.name || !form.specialization || !form.email) {
+      setError('Name, specialization, and email are required.')
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      const endpoint = editingDoctorId ? `/api/doctors/${editingDoctorId}` : '/api/doctors'
+      const method = editingDoctorId ? 'PUT' : 'POST'
+
+      const response = await fetch(endpoint, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: 'Request failed' }))
+        throw new Error(data.error ?? 'Request failed')
+      }
+
+      await loadDoctors()
+      resetForm()
+    } catch (apiError) {
+      const message = apiError instanceof Error ? apiError.message : 'Failed to save doctor'
+      setError(message)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleEdit = (doctor: Doctor) => {
+    setEditingDoctorId(doctor.id)
+    setForm({
+      name: doctor.name,
+      specialization: doctor.specialization,
+      email: doctor.email,
+      phone: doctor.phone,
+      hospital: doctor.hospital,
+      experience: doctor.experience,
+      status: doctor.status,
+    })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleDelete = async (id: string) => {
+    const confirmed = window.confirm('Are you sure you want to delete this doctor?')
+
+    if (!confirmed) {
+      return
+    }
+
+    setError('')
+
+    try {
+      const response = await fetch(`/api/doctors/${id}`, { method: 'DELETE' })
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({ error: 'Failed to delete doctor' }))
+        throw new Error(data.error ?? 'Failed to delete doctor')
+      }
+
+      setDoctors((current) => current.filter((doctor) => doctor.id !== id))
+      if (editingDoctorId === id) {
+        resetForm()
+      }
+    } catch (apiError) {
+      const message = apiError instanceof Error ? apiError.message : 'Failed to delete doctor'
+      setError(message)
+    }
+  }
 
   if (loading) {
     return (
@@ -139,10 +201,74 @@ const AdminDoctors = () => {
       <div className="admin-content">
         <div className="page-header">
           <h1>Doctor Management</h1>
-          <button className="btn-add-doctor" onClick={() => navigate('/admin/add-doctor')}>
-            + Add Doctor
+          <button className="btn-add-doctor" onClick={resetForm}>
+            + New Doctor
           </button>
         </div>
+
+        {error ? <div className="error-banner">{error}</div> : null}
+
+        <form className="doctor-form" onSubmit={handleCreateOrUpdate}>
+          <h2>{editingDoctorId ? 'Edit Doctor' : 'Add Doctor'}</h2>
+          <div className="form-grid">
+            <input
+              type="text"
+              placeholder="Doctor name"
+              value={form.name}
+              onChange={(e) => onChangeField('name', e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Specialization"
+              value={form.specialization}
+              onChange={(e) => onChangeField('specialization', e.target.value)}
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={form.email}
+              onChange={(e) => onChangeField('email', e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Phone"
+              value={form.phone}
+              onChange={(e) => onChangeField('phone', e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Hospital"
+              value={form.hospital}
+              onChange={(e) => onChangeField('hospital', e.target.value)}
+            />
+            <input
+              type="number"
+              min={0}
+              placeholder="Experience (years)"
+              value={form.experience}
+              onChange={(e) => onChangeField('experience', Number(e.target.value))}
+            />
+            <select
+              value={form.status}
+              onChange={(e) => onChangeField('status', e.target.value as Doctor['status'])}
+            >
+              <option value="available">Available</option>
+              <option value="busy">Busy</option>
+              <option value="offline">Offline</option>
+            </select>
+          </div>
+
+          <div className="form-actions">
+            <button type="submit" className="btn-save" disabled={isSubmitting}>
+              {isSubmitting ? 'Saving...' : editingDoctorId ? 'Update Doctor' : 'Add Doctor'}
+            </button>
+            {editingDoctorId ? (
+              <button type="button" className="btn-cancel" onClick={resetForm}>
+                Cancel Edit
+              </button>
+            ) : null}
+          </div>
+        </form>
 
         {/* Filters */}
         <div className="filters-section">
@@ -170,81 +296,48 @@ const AdminDoctors = () => {
           <div className="results-info">Showing {filteredDoctors.length} doctors</div>
         </div>
 
-        {/* Doctors Grid */}
-        <div className="doctors-grid">
+        {/* Doctor Table */}
+        <div className="doctor-table-wrapper">
           {filteredDoctors.length > 0 ? (
-            filteredDoctors.map((doctor) => (
-              <div key={doctor.id} className="doctor-card">
-                <div className="doctor-header">
-                  <div className="doctor-avatar">
-                    {doctor.name.charAt(0)}
-                  </div>
-                  <div className="doctor-status-badge" data-status={doctor.status}>
-                    {doctor.status}
-                  </div>
-                </div>
-
-                <div className="doctor-body">
-                  <h3>{doctor.name}</h3>
-                  <p className="specialization">{doctor.specialization}</p>
-
-                  <div className="doctor-info">
-                    <div className="info-item">
-                      <span className="icon">📧</span>
-                      <span className="value">{doctor.email}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="icon">📞</span>
-                      <span className="value">{doctor.phone}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="icon">🏥</span>
-                      <span className="value">{doctor.hospital}</span>
-                    </div>
-                  </div>
-
-                  <div className="doctor-stats">
-                    <div className="stat">
-                      <span className="label">Experience</span>
-                      <span className="number">{doctor.experience} yrs</span>
-                    </div>
-                    <div className="stat">
-                      <span className="label">Patients</span>
-                      <span className="number">{doctor.patients}</span>
-                    </div>
-                    <div className="stat">
-                      <span className="label">Rating</span>
-                      <span className="number">⭐ {doctor.rating}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="doctor-footer">
-                  <button
-                    className="btn-view"
-                    onClick={() => navigate(`/admin/doctor/${doctor.id}`)}
-                  >
-                    View
-                  </button>
-                  <button
-                    className="btn-edit"
-                    onClick={() => navigate(`/admin/edit-doctor/${doctor.id}`)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-delete"
-                    onClick={() => {
-                      if (confirm('Are you sure?')) {
-                        setDoctors(doctors.filter((d) => d.id !== doctor.id))
-                      }
-                    }}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))
+            <table className="doctor-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Specialization</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Hospital</th>
+                  <th>Experience</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredDoctors.map((doctor) => (
+                  <tr key={doctor.id}>
+                    <td>{doctor.name}</td>
+                    <td>{doctor.specialization}</td>
+                    <td>{doctor.email}</td>
+                    <td>{doctor.phone || '-'}</td>
+                    <td>{doctor.hospital || '-'}</td>
+                    <td>{doctor.experience} yrs</td>
+                    <td>
+                      <span className="doctor-status-badge" data-status={doctor.status}>
+                        {doctor.status}
+                      </span>
+                    </td>
+                    <td className="actions-cell">
+                      <button className="btn-edit" onClick={() => handleEdit(doctor)}>
+                        Edit
+                      </button>
+                      <button className="btn-delete" onClick={() => handleDelete(doctor.id)}>
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
             <div className="empty-state">
               <p>No doctors found.</p>

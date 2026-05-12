@@ -379,3 +379,41 @@ For issues or feature requests, contact the development team.
 **Version**: 1.0.0  
 **Last Updated**: May 11, 2026  
 **Status**: Production Ready
+
+## Deployment
+
+### Frontend: Vercel
+1. Push the repo to GitHub.
+2. Import the project in Vercel.
+3. Set the build command to `npm run build`.
+4. Set the output directory to `dist`.
+5. Add an environment variable if needed: `VITE_API_URL` pointing to your backend URL.
+6. Keep `vercel.json` in the repo so SPA routes like `/admin/dashboard` resolve correctly.
+
+### Backend: Render or Railway
+1. Create a new Web Service.
+2. Set the start command to `npm run server`.
+3. Set the Node version to match the project runtime.
+4. Add environment variables:
+   - `PORT`
+   - `JWT_SECRET`
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD_HASH`
+   - `JWT_EXPIRES_IN`
+   - `ADMIN_ROLE`
+   - `ENABLE_HTTPS=false`
+   - `FIREBASE_SERVICE_ACCOUNT_JSON` if you want Firebase-backed persistence
+5. Update the frontend `VITE_API_URL` to the deployed backend URL.
+
+### Database: MongoDB Atlas or Firebase
+- The current codebase is Firebase-first.
+- If you want MongoDB Atlas, you will need a database migration for users, doctors, appointments, and medical records.
+- If you want the fastest deployment, keep Firebase and provide the service account JSON in the backend environment.
+- If you migrate to MongoDB Atlas later, replace the realtime database calls and repository layer with Mongoose models or native MongoDB queries.
+
+### Security Notes for Production
+- Use HTTPS on the hosting platform.
+- Keep all secrets in environment variables.
+- Do not expose `ADMIN_PASSWORD_HASH` or `JWT_SECRET` in frontend env files.
+- Restrict upload types and file sizes.
+- Use role checks on protected APIs.

@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { signOut } from 'firebase/auth'
-import { auth } from '../../firebase'
 import './adminNavigation.css'
+import { clearAdminToken } from '../../utils/adminAuth'
 
 type NavItem = {
   id: string
@@ -28,8 +27,8 @@ const AdminNavigation = () => {
 
   const handleLogout = async () => {
     try {
-      await signOut(auth)
-      navigate('/login')
+      clearAdminToken()
+      navigate('/admin/login')
     } catch (error) {
       console.error('Logout error:', error)
     }

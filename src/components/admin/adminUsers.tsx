@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { auth } from '../../firebase'
 import './adminUsers.css'
 import AdminNavigation from './adminNavigation'
+import { verifyAdminToken } from '../../utils/adminAuth'
 
 type User = {
   id: string
@@ -26,18 +26,10 @@ const AdminUsers = () => {
   useEffect(() => {
     const checkAdminAndLoadUsers = async () => {
       try {
-        const user = auth.currentUser
-        if (!user) {
-          navigate('/login')
-          return
-        }
+        const admin = await verifyAdminToken()
 
-        const idTokenResult = await user.getIdTokenResult()
-        const isAdminUser =
-          idTokenResult.claims.admin === true || user.email === 'admin@unimedcare.com'
-
-        if (!isAdminUser) {
-          navigate('/dashboard')
+        if (!admin) {
+          navigate('/admin/login')
           return
         }
 

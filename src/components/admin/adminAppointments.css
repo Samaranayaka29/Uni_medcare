@@ -279,3 +279,41 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.error-banner {
+  background: rgba(239, 68, 68, 0.1);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-family: 'Manrope', sans-serif;
+}
+
+.status-pending {
+  background: rgba(245, 158, 11, 0.12);
+  color: #b45309;
+}
+
+.status-approved {
+  background: rgba(29, 99, 214, 0.12);
+  color: #1d63d6;
+}
+
+.status-completed {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.status-cancelled {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.btn-action.edit,
+.btn-action.delete {
+  min-width: 88px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+}

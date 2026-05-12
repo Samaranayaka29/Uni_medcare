@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { auth } from '../../firebase'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { db } from '../../firebase'
 import './adminDashboard.css'
 import AdminNavigation from './adminNavigation'
+import { verifyAdminToken } from '../../utils/adminAuth'
 
 type StatsCard = {
   id: string
@@ -16,7 +18,7 @@ type DashboardData = {
   totalUsers: number
   totalDoctors: number
   totalAppointments: number
-  pendingAppointments: number
+  pendingReports: number
   totalRevenue: number
   systemHealth: number
 }
@@ -27,46 +29,111 @@ const AdminDashboard = () => {
     totalUsers: 0,
     totalDoctors: 0,
     totalAppointments: 0,
-    pendingAppointments: 0,
+    pendingReports: 0,
     totalRevenue: 0,
-    systemHealth: 0,
+    systemHealth: 98,
   })
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
 
+  // Fetch total users
+  const fetchTotalUsers = async () => {
+    try {
+      const usersRef = collection(db, 'users')
+      const snapshot = await getDocs(usersRef)
+      return snapshot.size
+    } catch (error) {
+      console.error('Error fetching users:', error)
+      return 0
+    }
+  }
+
+  // Fetch total doctors
+  const fetchTotalDoctors = async () => {
+    try {
+      const doctorsRef = collection(db, 'doctors')
+      const snapshot = await getDocs(doctorsRef)
+      return snapshot.size
+    } catch (error) {
+      console.error('Error fetching doctors:', error)
+      return 0
+    }
+  }
+
+  // Fetch total appointments
+  const fetchTotalAppointments = async () => {
+    try {
+      const appointmentsRef = collection(db, 'appointments')
+      const snapshot = await getDocs(appointmentsRef)
+      return snapshot.size
+    } catch (error) {
+      console.error('Error fetching appointments:', error)
+      return 0
+    }
+  }
+
+  // Fetch pending reports
+  const fetchPendingReports = async () => {
+    try {
+      const recordsRef = collection(db, 'medicalrecords')
+      const q = query(recordsRef, where('status', '==', 'pending'))
+      const snapshot = await getDocs(q)
+      return snapshot.size
+    } catch (error) {
+      console.error('Error fetching pending reports:', error)
+      return 0
+    }
+  }
+
+  // Fetch total revenue (sum of all appointments cost)
+  const fetchTotalRevenue = async () => {
+    try {
+      const appointmentsRef = collection(db, 'appointments')
+      const snapshot = await getDocs(appointmentsRef)
+      let total = 0
+      snapshot.forEach((doc) => {
+        const data = doc.data()
+        if (data.cost) total += data.cost
+      })
+      return total
+    } catch (error) {
+      console.error('Error fetching revenue:', error)
+      return 0
+    }
+  }
+
   useEffect(() => {
     const checkAdminAccess = async () => {
       try {
-        const user = auth.currentUser
-        if (!user) {
-          navigate('/login')
-          return
-        }
+        const admin = await verifyAdminToken()
 
-        // Get custom claims to verify admin role
-        const idTokenResult = await user.getIdTokenResult()
-        const isAdminUser = idTokenResult.claims.admin === true || 
-                           user.email === 'admin@unimedcare.com'
-
-        if (!isAdminUser) {
-          navigate('/dashboard')
+        if (!admin) {
+          navigate('/admin/login')
           return
         }
 
         setIsAdmin(true)
-        
-        // Mock data - replace with real API calls
+
+        // Fetch real data from Firestore
+        const [totalUsers, totalDoctors, totalAppointments, pendingReports, totalRevenue] = await Promise.all([
+          fetchTotalUsers(),
+          fetchTotalDoctors(),
+          fetchTotalAppointments(),
+          fetchPendingReports(),
+          fetchTotalRevenue(),
+        ])
+
         setDashboardData({
-          totalUsers: 1250,
-          totalDoctors: 48,
-          totalAppointments: 3420,
-          pendingAppointments: 127,
-          totalRevenue: 254000,
+          totalUsers,
+          totalDoctors,
+          totalAppointments,
+          pendingReports,
+          totalRevenue,
           systemHealth: 98,
         })
       } catch (error) {
         console.error('Error checking admin access:', error)
-        navigate('/login')
+        navigate('/admin/login')
       } finally {
         setLoading(false)
       }
@@ -91,7 +158,7 @@ const AdminDashboard = () => {
   const stats: StatsCard[] = [
     {
       id: 'users',
-      label: 'Total Users',
+      label: 'Total Patients',
       value: dashboardData.totalUsers,
       change: 12,
       icon: '👥',
@@ -111,11 +178,11 @@ const AdminDashboard = () => {
       icon: '📅',
     },
     {
-      id: 'pending',
-      label: 'Pending Appointments',
-      value: dashboardData.pendingAppointments,
+      id: 'reports',
+      label: 'Pending Reports',
+      value: dashboardData.pendingReports,
       change: -2,
-      icon: '⏳',
+      icon: '📋',
     },
   ]
 
