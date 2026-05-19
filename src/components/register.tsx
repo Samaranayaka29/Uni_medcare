@@ -308,6 +308,9 @@ const Register = () => {
 									placeholder="Re-enter password"
 								/>
 								{errors.confirmPassword && <small className="error-text">{errors.confirmPassword}</small>}
+								{!errors.confirmPassword && form.confirmPassword && form.confirmPassword !== form.password && (
+									<small className="error-text">Passwords do not match.</small>
+								)}
 							</label>
 						</div>
 
@@ -321,7 +324,11 @@ const Register = () => {
 						</label>
 						{errors.agree && <small className="error-text">{errors.agree}</small>}
 
-						<button type="submit" className="register-button">
+						<button
+							type="submit"
+							className="register-button"
+							disabled={!form.agree || form.password.length < 8 || form.confirmPassword !== form.password}
+						>
 							Create student account
 						</button>
 

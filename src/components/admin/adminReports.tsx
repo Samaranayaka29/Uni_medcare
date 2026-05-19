@@ -48,7 +48,7 @@ type LabResultItem = BaseRecord & {
 
 type RecordModule = 'report' | 'prescription' | 'lab'
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000'
+const API_URL = import.meta.env.VITE_API_URL ?? '/api'
 const pieColors = ['#1d63d6', '#12b981', '#f59e0b', '#ef4444']
 
 const AdminReports = () => {

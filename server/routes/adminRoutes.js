@@ -10,13 +10,13 @@ const JWT_SECRET = process.env.JWT_SECRET ?? ''
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN ?? '8h'
 const ADMIN_ROLE = process.env.ADMIN_ROLE ?? 'SuperAdmin'
 
-const isAuthConfigured = () => ADMIN_PASSWORD_HASH.length > 0 && JWT_SECRET.length > 0
+const isAuthConfigured = () => ADMIN_PASSWORD_HASH.length > 0 && JWT_SECRET.trim().length >= 16
 
 export const adminLogin = async (req, res) => {
   try {
     if (!isAuthConfigured()) {
       res.status(500).json({
-        error: 'Admin auth is not configured. Set ADMIN_PASSWORD_HASH and JWT_SECRET in your environment.',
+        error: 'Admin auth is not configured. Set ADMIN_PASSWORD_HASH and a strong JWT_SECRET in your environment.',
       })
       return
     }
@@ -40,16 +40,23 @@ export const adminLogin = async (req, res) => {
       return
     }
 
-    const token = jwt.sign(
-      {
-        email,
-        role: ADMIN_ROLE,
-      },
-      JWT_SECRET,
-      {
-        expiresIn: JWT_EXPIRES_IN,
-      },
-    )
+    let token
+    try {
+      token = jwt.sign(
+        {
+          email,
+          role: ADMIN_ROLE,
+        },
+        JWT_SECRET,
+        {
+          expiresIn: JWT_EXPIRES_IN,
+        },
+      )
+    } catch (signError) {
+      const message = signError instanceof Error ? signError.message : 'Failed to generate admin token'
+      res.status(500).json({ error: message })
+      return
+    }
 
     res.json({
       message: 'Admin login successful',
@@ -68,7 +75,7 @@ export const adminLogin = async (req, res) => {
 export const verifyAdminToken = (req, res, next) => {
   if (!isAuthConfigured()) {
     res.status(500).json({
-      error: 'Admin auth is not configured. Set ADMIN_PASSWORD_HASH and JWT_SECRET in your environment.',
+      error: 'Admin auth is not configured. Set ADMIN_PASSWORD_HASH and a strong JWT_SECRET in your environment.',
     })
     return
   }
