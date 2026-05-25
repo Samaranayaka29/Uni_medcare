@@ -32,7 +32,7 @@ type ModuleItem = {
   description: string
   icon: string
   route?: string
-  accent: 'blue' | 'green' | 'amber' | 'red' | 'teal' | 'violet'
+  accent: 'blue' | 'green' | 'amber' | 'red' | 'teal' | 'violet' | 'slate'
 }
 
 type ActivityItem = {

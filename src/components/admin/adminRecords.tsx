@@ -70,14 +70,14 @@ const AdminRecords = () => {
   const [search, setSearch] = useState('')
   const [patientIdSearch, setPatientIdSearch] = useState('')
   const [doctorFilter, setDoctorFilter] = useState('')
-  const [typeFilter, setTypeFilter] = useState('')
+  const typeFilterState = useState('')
+  const typeFilter = typeFilterState[0]
   const [statusFilter, setStatusFilter] = useState('')
   const [fromDate, setFromDate] = useState('')
   const [toDate, setToDate] = useState('')
   const [page, setPage] = useState(1)
   const [pageSize] = useState(12)
   const [selectedRecord, setSelectedRecord] = useState<PatientRecord | null>(null)
-  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     const init = async () => {
@@ -189,22 +189,7 @@ const AdminRecords = () => {
     }
   }
 
-  const handleUploadReport = async (file: File, patientId: string, title = 'Lab Report') => {
-    try {
-      setUploading(true)
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('patientId', patientId)
-      fd.append('title', title)
-      const res = await fetch(`${API_URL}/api/records/reports`, { method: 'POST', body: fd, credentials: 'include' })
-      if (!res.ok) throw new Error(await res.text())
-      await loadRecords()
-    } catch (err) {
-      console.error('Upload failed', err)
-    } finally {
-      setUploading(false)
-    }
-  }
+  
 
   if (loading) {
     return (
