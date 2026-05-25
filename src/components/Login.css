@@ -5,8 +5,8 @@
   --login-muted: #5e7590;
   --login-card-line: #d8e5f4;
   --login-surface: #ffffff;
-  --login-primary: #1d63d6;
-  --login-primary-strong: #154aa8;
+  --login-primary: #1960d6;
+  --login-primary-strong: #113f9a;
   --login-primary-soft: #e7f0ff;
   --login-input-bg: #f8fbff;
 }
@@ -118,7 +118,7 @@
 
 .login-image-panel {
   position: relative;
-  min-height: 300px;
+  min-height: 360px;
   overflow: hidden;
 }
 
@@ -208,22 +208,24 @@
 }
 
 .login-card {
-  width: min(100%, 416px);
-  background: var(--login-surface);
-  border: 1px solid var(--login-card-line);
-  border-radius: 18px;
-  box-shadow: 0 18px 42px rgba(22, 47, 88, 0.11);
+  width: min(100%, 480px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), var(--login-surface));
+  border: 1px solid rgba(27,82,162,0.08);
+  border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(20, 36, 70, 0.12);
   overflow: hidden;
+  padding: 18px 0 28px;
 }
 
 .shield-badge {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
   display: grid;
   place-items: center;
   margin: 14px auto 8px;
-  background: var(--login-primary-soft);
+  background: linear-gradient(180deg, rgba(30,110,230,0.12), rgba(29,99,214,0.06));
+  box-shadow: 0 8px 24px rgba(29,99,214,0.12), inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
 .shield-icon {
@@ -235,20 +237,24 @@
 .login-card h1 {
   margin: 0;
   text-align: center;
-  font-size: 38px;
-  line-height: 1.08;
+  font-size: 44px;
+  line-height: 1.06;
   letter-spacing: -0.02em;
   font-family: 'Sora', sans-serif;
+  color: var(--login-primary-strong);
 }
 
 .portal-subtitle {
-  margin: 4px 24px 10px;
+  margin: 8px 32px 16px;
   text-align: center;
   color: var(--login-muted);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   font-family: 'Manrope', sans-serif;
   font-weight: 600;
+  max-width: 84%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .login-form {
@@ -266,7 +272,7 @@
 }
 
 .input-wrap {
-  height: 40px;
+  height: 48px;
   border-radius: 12px;
   background: var(--login-input-bg);
   border: 1px solid #d6e3ef;
@@ -274,6 +280,7 @@
   align-items: center;
   margin-bottom: 10px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
 }
 
 .input-wrap:focus-within {
@@ -282,11 +289,12 @@
 }
 
 .input-icon {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   color: #7e90a8;
-  margin: 0 10px;
+  margin: 0 12px;
   flex: 0 0 auto;
+  opacity: 0.95;
 }
 
 .input-wrap input {
@@ -294,11 +302,35 @@
   border: 0;
   outline: 0;
   background: transparent;
-  color: #22364d;
+  color: #122433;
   font-family: 'Manrope', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 800;
   padding-right: 10px;
+}
+
+.password-toggle {
+  margin-left: 8px;
+  margin-right: 10px;
+  background: transparent;
+  border: 0;
+  color: var(--login-primary);
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: background 0.15s ease, transform 0.08s ease;
+}
+
+.password-toggle:hover {
+  background: rgba(29, 99, 214, 0.06);
+  transform: translateY(-1px);
+}
+
+.password-toggle:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .input-wrap input::placeholder {
@@ -340,29 +372,31 @@
 }
 
 .login-button {
-  margin-top: 10px;
-  width: 100%;
-  height: 40px;
+  margin-top: 14px;
+  width: 92%;
+  height: 48px;
+  margin-left: auto;
+  margin-right: auto;
   border: 0;
-  border-radius: 12px;
-  background: linear-gradient(180deg, #3a86ff 0%, var(--login-primary) 100%);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #3ea0ff 0%, var(--login-primary) 100%);
   color: #ffffff;
-  font-size: 14px;
+  font-size: 15px;
   font-family: 'Manrope', sans-serif;
-  font-weight: 800;
+  font-weight: 900;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 11px;
+  gap: 12px;
   cursor: pointer;
-  box-shadow: 0 14px 28px rgba(29, 99, 214, 0.28);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 20px 40px rgba(29, 99, 214, 0.22);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .login-button:hover {
-  background: linear-gradient(180deg, #2d78ec 0%, var(--login-primary-strong) 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 18px 35px rgba(29, 99, 214, 0.34);
+  background: linear-gradient(180deg, #2b86f6 0%, var(--login-primary-strong) 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 28px 60px rgba(29, 99, 214, 0.26);
 }
 
 .arrow-icon {

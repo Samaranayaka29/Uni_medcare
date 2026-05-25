@@ -109,6 +109,22 @@
   border-radius: 0 3px 3px 0;
 }
 
+.nav-children {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0.5rem;
+}
+
+.nav-subitem {
+  padding: 0.5rem 1.5rem 0.5rem 2.25rem;
+  font-size: 0.95rem;
+  color: var(--admin-text-muted);
+}
+
+.nav-subitem .nav-icon {
+  min-width: 20px;
+}
+
 .nav-icon {
   font-size: 1.3rem;
   min-width: 24px;

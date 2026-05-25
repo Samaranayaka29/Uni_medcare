@@ -8,6 +8,7 @@ type NavItem = {
   label: string
   path: string
   icon: string
+  children?: Array<{ id: string; label: string; path: string; icon: string }>
 }
 
 const AdminNavigation = () => {
@@ -21,8 +22,17 @@ const AdminNavigation = () => {
     { id: 'doctors', label: 'Doctors', path: '/admin/doctors', icon: '👨‍⚕️' },
     { id: 'appointments', label: 'Appointments', path: '/admin/appointments', icon: '📅' },
     { id: 'records', label: 'Medical Records', path: '/admin/records', icon: '📄' },
-    { id: 'reports', label: 'Reports', path: '/admin/reports', icon: '📈' },
-    { id: 'settings', label: 'Settings', path: '/admin/settings', icon: '⚙️' },
+    /* Departments and Notifications are nested under Settings */
+    {
+      id: 'settings',
+      label: 'Settings',
+      path: '/admin/settings',
+      icon: '⚙️',
+      children: [
+        { id: 'departments', label: 'Departments', path: '/admin/settings#departments', icon: '🏛️' },
+        { id: 'notifications', label: 'Notifications', path: '/admin/settings#notifications', icon: '🔔' },
+      ],
+    },
   ]
 
   const handleLogout = async () => {
@@ -53,14 +63,23 @@ const AdminNavigation = () => {
 
         <div className="nav-menu">
           {navItems.map((item) => (
-            <NavLink
-              key={item.id}
-              to={item.path}
-              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-            >
-              <span className="nav-icon">{item.icon}</span>
-              {isOpen && <span className="nav-label">{item.label}</span>}
-            </NavLink>
+            <div key={item.id}>
+              <NavLink to={item.path} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                <span className="nav-icon">{item.icon}</span>
+                {isOpen && <span className="nav-label">{item.label}</span>}
+              </NavLink>
+
+              {isOpen && item.children && (
+                <div className="nav-children">
+                  {item.children.map((child) => (
+                    <NavLink key={child.id} to={child.path} className={({ isActive }) => `nav-item nav-subitem ${isActive ? 'active' : ''}`}>
+                      <span className="nav-icon">{child.icon}</span>
+                      <span className="nav-label">{child.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
 

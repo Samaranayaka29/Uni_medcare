@@ -89,6 +89,8 @@ const appointmentsStore = new Map()
 const reportsStore = new Map()
 const prescriptionsStore = new Map()
 const labResultsStore = new Map()
+const recordsStore = new Map()
+const certificatesStore = new Map()
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadRoot),
@@ -181,21 +183,58 @@ app.get('/api/users', async (_req, res) => {
 
 app.post('/api/doctors', requireRoles(['SuperAdmin', 'Receptionist']), async (req, res) => {
   try {
-    const { name, specialization, email, phone, hospital, experience, status } = req.body
+    const {
+      name,
+      fullName,
+      doctorId,
+      gender,
+      dateOfBirth,
+      specialization,
+      department,
+      email,
+      phone,
+      address,
+      qualification,
+      availableTime,
+      availableDays,
+      hospital,
+      experience,
+      status,
+      photoUrl,
+      certificateFiles,
+    } = req.body
 
-    if (!isNonEmptyString(name) || !isNonEmptyString(specialization) || !isNonEmptyString(email)) {
+    const doctorName = isNonEmptyString(fullName) ? fullName : name
+
+    if (!isNonEmptyString(doctorName) || !isNonEmptyString(specialization) || !isNonEmptyString(email)) {
       res.status(400).json({ error: 'name, specialization, and email are required' })
       return
     }
 
     const payload = {
-      name: name.trim(),
+      name: doctorName.trim(),
+      fullName: doctorName.trim(),
+      doctorId: isNonEmptyString(doctorId) ? doctorId.trim() : '',
+      gender: isNonEmptyString(gender) ? gender.trim() : '',
+      dateOfBirth: isNonEmptyString(dateOfBirth) ? dateOfBirth : '',
       specialization: specialization.trim(),
+      department: isNonEmptyString(department) ? department.trim() : '',
       email: email.trim().toLowerCase(),
       phone: isNonEmptyString(phone) ? phone.trim() : '',
+      address: isNonEmptyString(address) ? address.trim() : '',
+      qualification: isNonEmptyString(qualification) ? qualification.trim() : '',
+      availableTime: isNonEmptyString(availableTime) ? availableTime.trim() : '',
+      availableDays: Array.isArray(availableDays) ? availableDays : [],
       hospital: isNonEmptyString(hospital) ? hospital.trim() : '',
       experience: parsePositiveNumber(experience),
       status: isNonEmptyString(status) ? status : 'available',
+      photoUrl: isNonEmptyString(photoUrl) ? photoUrl : '',
+      certificateFiles: Array.isArray(certificateFiles) ? certificateFiles : [],
+      workingSchedule: Array.isArray(availableDays)
+        ? availableDays.map((day) => ({ day, time: isNonEmptyString(availableTime) ? availableTime : '' }))
+        : [],
+      appointmentCount: 0,
+      assignedPatients: 0,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     }
@@ -242,9 +281,32 @@ app.get('/api/doctors', requireRoles(['SuperAdmin', 'Receptionist', 'Doctor']), 
 app.put('/api/doctors/:id', requireRoles(['SuperAdmin', 'Receptionist']), async (req, res) => {
   try {
     const { id } = req.params
-    const { name, specialization, email, phone, hospital, experience, status } = req.body
+    const {
+      name,
+      fullName,
+      doctorId,
+      gender,
+      dateOfBirth,
+      specialization,
+      department,
+      email,
+      phone,
+      address,
+      qualification,
+      availableTime,
+      availableDays,
+      hospital,
+      experience,
+      status,
+      photoUrl,
+      certificateFiles,
+      appointmentCount,
+      assignedPatients,
+    } = req.body
 
-    if (!isNonEmptyString(name) || !isNonEmptyString(specialization) || !isNonEmptyString(email)) {
+    const doctorName = isNonEmptyString(fullName) ? fullName : name
+
+    if (!isNonEmptyString(doctorName) || !isNonEmptyString(specialization) || !isNonEmptyString(email)) {
       res.status(400).json({ error: 'name, specialization, and email are required' })
       return
     }
@@ -257,13 +319,29 @@ app.put('/api/doctors/:id', requireRoles(['SuperAdmin', 'Receptionist']), async 
       }
 
       const payload = {
-        name: name.trim(),
+        name: doctorName.trim(),
+        fullName: doctorName.trim(),
+        doctorId: isNonEmptyString(doctorId) ? doctorId.trim() : '',
+        gender: isNonEmptyString(gender) ? gender.trim() : '',
+        dateOfBirth: isNonEmptyString(dateOfBirth) ? dateOfBirth : '',
         specialization: specialization.trim(),
+        department: isNonEmptyString(department) ? department.trim() : '',
         email: email.trim().toLowerCase(),
         phone: isNonEmptyString(phone) ? phone.trim() : '',
+        address: isNonEmptyString(address) ? address.trim() : '',
+        qualification: isNonEmptyString(qualification) ? qualification.trim() : '',
+        availableTime: isNonEmptyString(availableTime) ? availableTime.trim() : '',
+        availableDays: Array.isArray(availableDays) ? availableDays : [],
         hospital: isNonEmptyString(hospital) ? hospital.trim() : '',
         experience: parsePositiveNumber(experience),
         status: isNonEmptyString(status) ? status : 'available',
+        photoUrl: isNonEmptyString(photoUrl) ? photoUrl : '',
+        certificateFiles: Array.isArray(certificateFiles) ? certificateFiles : [],
+        workingSchedule: Array.isArray(availableDays)
+          ? availableDays.map((day) => ({ day, time: isNonEmptyString(availableTime) ? availableTime : '' }))
+          : [],
+        appointmentCount: Number.isFinite(Number(appointmentCount)) ? Number(appointmentCount) : 0,
+        assignedPatients: Number.isFinite(Number(assignedPatients)) ? Number(assignedPatients) : 0,
         updatedAt: Date.now(),
       }
 
@@ -280,13 +358,29 @@ app.put('/api/doctors/:id', requireRoles(['SuperAdmin', 'Receptionist']), async 
     }
 
     const payload = {
-      name: name.trim(),
+      name: doctorName.trim(),
+      fullName: doctorName.trim(),
+      doctorId: isNonEmptyString(doctorId) ? doctorId.trim() : '',
+      gender: isNonEmptyString(gender) ? gender.trim() : '',
+      dateOfBirth: isNonEmptyString(dateOfBirth) ? dateOfBirth : '',
       specialization: specialization.trim(),
+      department: isNonEmptyString(department) ? department.trim() : '',
       email: email.trim().toLowerCase(),
       phone: isNonEmptyString(phone) ? phone.trim() : '',
+      address: isNonEmptyString(address) ? address.trim() : '',
+      qualification: isNonEmptyString(qualification) ? qualification.trim() : '',
+      availableTime: isNonEmptyString(availableTime) ? availableTime.trim() : '',
+      availableDays: Array.isArray(availableDays) ? availableDays : [],
       hospital: isNonEmptyString(hospital) ? hospital.trim() : '',
       experience: parsePositiveNumber(experience),
       status: isNonEmptyString(status) ? status : 'available',
+      photoUrl: isNonEmptyString(photoUrl) ? photoUrl : '',
+      certificateFiles: Array.isArray(certificateFiles) ? certificateFiles : [],
+      workingSchedule: Array.isArray(availableDays)
+        ? availableDays.map((day) => ({ day, time: isNonEmptyString(availableTime) ? availableTime : '' }))
+        : [],
+      appointmentCount: Number.isFinite(Number(appointmentCount)) ? Number(appointmentCount) : 0,
+      assignedPatients: Number.isFinite(Number(assignedPatients)) ? Number(assignedPatients) : 0,
       updatedAt: Date.now(),
     }
 
@@ -522,6 +616,226 @@ app.post('/api/records/lab-results', requireRoles(['SuperAdmin', 'Doctor']), upl
 
 app.get('/api/records/lab-results', requireRoles(['SuperAdmin', 'Doctor', 'Receptionist']), (_req, res) => {
   const items = Array.from(labResultsStore.entries()).map(([id, value]) => ({ id, ...value }))
+  res.json(items)
+})
+
+// Generic medical records CRUD (supports in-memory fallback and future Firestore persistence)
+app.post('/api/records', requireRoles(['SuperAdmin', 'Receptionist', 'Doctor']), async (req, res) => {
+  try {
+    const payload = req.body
+    if (!payload || !payload.patientId || !payload.patientName) {
+      res.status(400).json({ error: 'patientId and patientName are required' })
+      return
+    }
+
+    const id = `mr_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+    const record = {
+      patientId: String(payload.patientId),
+      patientName: String(payload.patientName),
+      age: payload.age ?? null,
+      gender: payload.gender ?? '',
+      contactNumber: payload.contactNumber ?? '',
+      faculty: payload.faculty ?? '',
+      bloodGroup: payload.bloodGroup ?? '',
+      allergies: Array.isArray(payload.allergies) ? payload.allergies : [],
+      medicalHistory: payload.medicalHistory ?? '',
+      currentMedications: Array.isArray(payload.currentMedications) ? payload.currentMedications : [],
+      previousTreatments: payload.previousTreatments ?? '',
+      vaccinationRecords: Array.isArray(payload.vaccinationRecords) ? payload.vaccinationRecords : [],
+      visits: Array.isArray(payload.visits) ? payload.visits : [],
+      prescriptions: Array.isArray(payload.prescriptions) ? payload.prescriptions : [],
+      labResults: Array.isArray(payload.labResults) ? payload.labResults : [],
+      certificates: Array.isArray(payload.certificates) ? payload.certificates : [],
+      status: payload.status ?? 'Active',
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    }
+
+    if (!hasServiceAccount) {
+      recordsStore.set(id, record)
+      res.status(201).json({ id, ...record })
+      return
+    }
+
+    const ref = db.ref('medicalRecords').push()
+    await withTimeout(ref.set(record), 'Save medical record')
+    res.status(201).json({ id: ref.key, ...record })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to save medical record'
+    res.status(500).json({ error: message })
+  }
+})
+
+app.get('/api/records', requireRoles(['SuperAdmin', 'Doctor', 'Receptionist']), async (req, res) => {
+  try {
+    const { patientId, patientName, doctor, fromDate, toDate, status, type } = req.query
+
+    if (!hasServiceAccount) {
+      let items = Array.from(recordsStore.entries()).map(([id, value]) => ({ id, ...value }))
+
+      if (patientId) items = items.filter((i) => String(i.patientId).includes(String(patientId)))
+      if (patientName) items = items.filter((i) => String(i.patientName).toLowerCase().includes(String(patientName).toLowerCase()))
+      if (doctor) items = items.filter((i) => (i.visits || []).some((v) => String(v.doctor).toLowerCase().includes(String(doctor).toLowerCase())))
+      if (status) items = items.filter((i) => String(i.status).toLowerCase() === String(status).toLowerCase())
+      if (fromDate) {
+        const fromTs = Date.parse(String(fromDate))
+        if (!Number.isNaN(fromTs)) items = items.filter((i) => i.createdAt >= fromTs)
+      }
+      if (toDate) {
+        const toTs = Date.parse(String(toDate))
+        if (!Number.isNaN(toTs)) items = items.filter((i) => i.createdAt <= toTs)
+      }
+
+      res.json(items)
+      return
+    }
+
+    const snapshot = await withTimeout(db.ref('medicalRecords').get(), 'Load medical records')
+    if (!snapshot.exists()) {
+      res.json([])
+      return
+    }
+
+    let items = Object.entries(snapshot.val()).map(([id, value]) => ({ id, ...value }))
+    if (patientId) items = items.filter((i) => String(i.patientId).includes(String(patientId)))
+    if (patientName) items = items.filter((i) => String(i.patientName).toLowerCase().includes(String(patientName).toLowerCase()))
+    if (doctor) items = items.filter((i) => (i.visits || []).some((v) => String(v.doctor).toLowerCase().includes(String(doctor).toLowerCase())))
+    if (status) items = items.filter((i) => String(i.status).toLowerCase() === String(status).toLowerCase())
+    if (fromDate) {
+      const fromTs = Date.parse(String(fromDate))
+      if (!Number.isNaN(fromTs)) items = items.filter((i) => i.createdAt >= fromTs)
+    }
+    if (toDate) {
+      const toTs = Date.parse(String(toDate))
+      if (!Number.isNaN(toTs)) items = items.filter((i) => i.createdAt <= toTs)
+    }
+
+    res.json(items)
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to load medical records'
+    res.status(500).json({ error: message })
+  }
+})
+
+app.get('/api/records/:id', requireRoles(['SuperAdmin', 'Doctor', 'Receptionist']), async (req, res) => {
+  try {
+    const { id } = req.params
+    if (!hasServiceAccount) {
+      const item = recordsStore.get(id)
+      if (!item) {
+        res.status(404).json({ error: 'Record not found' })
+        return
+      }
+      res.json({ id, ...item })
+      return
+    }
+
+    const ref = db.ref(`medicalRecords/${id}`)
+    const snapshot = await withTimeout(ref.get(), 'Load medical record')
+    if (!snapshot.exists()) {
+      res.status(404).json({ error: 'Record not found' })
+      return
+    }
+    res.json({ id, ...snapshot.val() })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to load record'
+    res.status(500).json({ error: message })
+  }
+})
+
+app.put('/api/records/:id', requireRoles(['SuperAdmin', 'Doctor']), async (req, res) => {
+  try {
+    const { id } = req.params
+    const payload = req.body
+    if (!payload) {
+      res.status(400).json({ error: 'payload required' })
+      return
+    }
+
+    if (!hasServiceAccount) {
+      const existing = recordsStore.get(id)
+      if (!existing) {
+        res.status(404).json({ error: 'Record not found' })
+        return
+      }
+      const updated = { ...existing, ...payload, updatedAt: Date.now() }
+      recordsStore.set(id, updated)
+      res.json({ id, ...updated })
+      return
+    }
+
+    const ref = db.ref(`medicalRecords/${id}`)
+    const snapshot = await withTimeout(ref.get(), 'Load medical record')
+    if (!snapshot.exists()) {
+      res.status(404).json({ error: 'Record not found' })
+      return
+    }
+
+    const update = { ...payload, updatedAt: Date.now() }
+    await withTimeout(ref.update(update), 'Update medical record')
+    res.json({ id, ...snapshot.val(), ...update })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to update record'
+    res.status(500).json({ error: message })
+  }
+})
+
+app.delete('/api/records/:id', requireRoles(['SuperAdmin']), async (req, res) => {
+  try {
+    const { id } = req.params
+    if (!hasServiceAccount) {
+      const existed = recordsStore.delete(id)
+      if (!existed) {
+        res.status(404).json({ error: 'Record not found' })
+        return
+      }
+      res.json({ message: 'Record deleted' })
+      return
+    }
+
+    const ref = db.ref(`medicalRecords/${id}`)
+    const snapshot = await withTimeout(ref.get(), 'Load medical record')
+    if (!snapshot.exists()) {
+      res.status(404).json({ error: 'Record not found' })
+      return
+    }
+    await withTimeout(ref.remove(), 'Delete medical record')
+    res.json({ message: 'Record deleted' })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to delete record'
+    res.status(500).json({ error: message })
+  }
+})
+
+// Certificates management
+app.post('/api/records/certificates', requireRoles(['SuperAdmin', 'Doctor']), uploadMedicalFile.single('file'), (req, res) => {
+  try {
+    const { patientId, issuedBy, issuedFor, notes } = req.body
+    if (!isNonEmptyString(patientId) || !isNonEmptyString(issuedFor)) {
+      res.status(400).json({ error: 'patientId and issuedFor are required' })
+      return
+    }
+
+    const id = `cert_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+    const payload = {
+      patientId: patientId.trim(),
+      issuedBy: issuedBy ?? '',
+      issuedFor: issuedFor.trim(),
+      notes: isNonEmptyString(notes) ? notes.trim() : '',
+      filePath: req.file ? `/uploads/medical/${req.file.filename}` : null,
+      createdAt: Date.now(),
+    }
+
+    certificatesStore.set(id, payload)
+    res.status(201).json({ id, ...payload })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to create certificate'
+    res.status(500).json({ error: message })
+  }
+})
+
+app.get('/api/records/certificates', requireRoles(['SuperAdmin', 'Doctor', 'Receptionist']), (_req, res) => {
+  const items = Array.from(certificatesStore.entries()).map(([id, value]) => ({ id, ...value }))
   res.json(items)
 })
 

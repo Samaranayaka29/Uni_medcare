@@ -48,10 +48,11 @@ const AdminLoginIcon = ({ name, className }) => {
 const AdminLogin = () => {
 	const navigate = useNavigate()
 	const hasCheckedSession = useRef(false)
-	const [email, setEmail] = useState('')
+	const [email, setEmail] = useState('admin@unimedcare.com')
 	const [password, setPassword] = useState('')
 	const [message, setMessage] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
+	const [showPassword, setShowPassword] = useState(false)
 
 	useEffect(() => {
 		if (hasCheckedSession.current) {
@@ -190,12 +191,21 @@ const AdminLogin = () => {
 									<AdminLoginIcon name="lock" className="input-icon" />
 									<input
 										id="admin-password"
-										type="password"
+										type={showPassword ? 'text' : 'password'}
 										value={password}
 										onChange={(event) => setPassword(event.target.value)}
 										autoComplete="current-password"
 										disabled={isLoading}
 									/>
+									<button
+										type="button"
+										className="password-toggle"
+										onClick={() => setShowPassword((s) => !s)}
+										disabled={isLoading}
+										aria-label={showPassword ? 'Hide password' : 'Show password'}
+									>
+										{showPassword ? 'Hide' : 'Show'}
+									</button>
 								</div>
 
 								<button className="login-button" type="submit" disabled={isLoading}>
