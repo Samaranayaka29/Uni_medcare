@@ -3,7 +3,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import '../Login.css'
 import doctorImage from '../../assets/doctor-img1.jpeg'
 
-const API_URL = import.meta.env.VITE_API_URL ?? '/api'
+const API_URL = import.meta.env.VITE_API_URL ?? ''
+
+const buildApi = (path) => {
+	if (!path.startsWith('/')) {
+		path = `/${path}`
+	}
+	if (!API_URL) return path
+	return `${API_URL.replace(/\/$/, '')}${path}`
+}
 
 const AdminLoginIcon = ({ name, className }) => {
 	switch (name) {
@@ -69,7 +77,7 @@ const AdminLogin = () => {
 			}
 
 			try {
-				const response = await fetch(`${API_URL}/api/admin/me`, {
+				const response = await fetch(buildApi('/api/admin/me'), {
 					method: 'GET',
 					headers: {
 						'Authorization': `Bearer ${token}`,
@@ -96,7 +104,7 @@ const AdminLogin = () => {
 		setMessage('')
 
 		try {
-			const response = await fetch(`${API_URL}/api/admin/login`, {
+			const response = await fetch(buildApi('/api/admin/login'), {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
